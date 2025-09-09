@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jeferson-hernandez08/api_proyectretention_711.git"
+    "url": "git+https://github.com/jeferson-hernandez08/api_projectretention_711.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jeferson-hernandez08/api_proyectretention_711/issues"
+    "url": "https://github.com/jeferson-hernandez08/api_projectretention_711/issues"
   },
-  "homepage": "https://github.com/jeferson-hernandez08/api_proyectretention_711#readme",
+  "homepage": "https://github.com/jeferson-hernandez08/api_projectretention_711#readme",
   "dependencies": {
     "express": "^5.1.0",
     "mysql2": "^3.14.5",
