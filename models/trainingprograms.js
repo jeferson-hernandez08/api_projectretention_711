@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       // 👇 Un programa de formacion tiene muchos grupos
       TrainingPrograms.hasMany(models.Groups, {
         foreignKey: 'fkIdTrainingPrograms',     // Llave foránea en la tabla programa de formacion
-        as: 'groups'                   // Alias para acceder a los grupos desde un programa de formacion | Capturamos los grupos desde un programa de formacion (Opcional)
+        as: 'groups'                   // Alias para acceder a los grupos desde un programa de formacion | Para Capturamos los grupos desde un programa de formacion (Opcional)
       });
 
     }
