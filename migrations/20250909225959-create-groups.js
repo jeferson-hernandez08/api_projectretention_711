@@ -40,7 +40,7 @@ module.exports = {
           key: 'id'      // Columna id referenciada
         },
         onUpdate: 'CASCADE',
-        onDelete: 'RESTRICT'    // No se puede borrar una grupo si tienen programas de formacion
+        onDelete: 'RESTRICT'    // No se puede borrar una programa de formacion si tiene grupos
       },
       createdAt: {
         allowNull: false,

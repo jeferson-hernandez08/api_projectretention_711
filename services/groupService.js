@@ -1,6 +1,6 @@
 const db = require('../models');
 
-const getAllGroup = async () => {
+const getAllGroups = async () => {
     try {
         const allGroups = await db.Groups.findAll({
             include: [
@@ -16,7 +16,7 @@ const getAllGroup = async () => {
                 exclude: ['createdAt', 'updatedAt']  // Excluir campos de fecha de creación y actualización
             },
         });
-        return allEvents;
+        return allGroups;
     } catch (error) {
         throw new Error(`Error al traer los grupos ${error.meessage}`); 
     }    
@@ -79,4 +79,4 @@ const deleteGroup = async (id) => {
     }
 }
 
-module.exports = { getAllGroup, getOneGroup, createGroup, updateGroup, deleteGroup };   // Exportamos las funciones para que puedan ser utilizadas en otros archivos};
+module.exports = { getAllGroups, getOneGroup, createGroup, updateGroup, deleteGroup };   // Exportamos las funciones para que puedan ser utilizadas en otros archivos};
