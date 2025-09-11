@@ -22,7 +22,7 @@ const getAllGroup = async () => {
     }    
 };
 
-// Ruta getOneGroup  // QUEDE AQUI
+// Ruta getOneGroup
 const getOneGroup = async (id) => {
     try {
         const group = await db.Groups.findByPk(id);
@@ -32,50 +32,51 @@ const getOneGroup = async (id) => {
     }    
 }
 
-// Ruta createEvent
-const createEvent = async (name, description, starDate, endDate, categoryId, state, maxCapacity, userId) => { 
+// Ruta createGroup
+const createGroup = async (file, trainingStart, trainingEnd, practiceStart, practiceEnd, managerName, shift, modality, fkIdTrainingPrograms) => { 
     try {
-        const newEvent = await db.Events.create({ name, description, starDate, endDate, categoryId, state, maxCapacity, userId });
-        return newEvent;
+        const newGroup = await db.Groups.create({ file, trainingStart, trainingEnd, practiceStart, practiceEnd, managerName, shift, modality, fkIdTrainingPrograms });
+        return newGroup;
     } catch (error) {
-        throw new Error(`Error al crear el evento ${error.message}`);
+        throw new Error(`Error al crear el grupo ${error.message}`);
     }
 }
 
-// Ruta updateEvent
-const updateEvent = async (id, name, description, starDate, endDate, categoryId, state, maxCapacity, userId) => { 
+// Ruta updateGroup
+const updateGroup = async (id, file, trainingStart, trainingEnd, practiceStart, practiceEnd, managerName, shift, modality, fkIdTrainingPrograms) => { 
     try {
-        const event = await db.Events.findByPk(id);
-        if (!event) {
-            throw new Error('Evento no encontrado');
+        const group = await db.Groups.findByPk(id);
+        if (!group) {
+            throw new Error('grupo no encontrado');
         }
-        event.name = name;
-        event.description = description;
-        event.starDate = starDate;
-        event.endDate = endDate;
-        event.categoryId = categoryId;
-        event.state = state;
-        event.maxCapacity = maxCapacity;
-        event.userId = userId;
-        await event.save();
-        return event;
+        group.file = file;
+        group.trainingStart = trainingStart;
+        group.trainingEnd = trainingEnd;
+        group.practiceStart = practiceStart;
+        group.practiceEnd = practiceEnd;
+        group.managerName = managerName;
+        group.shift = shift;
+        group.modality = modality;
+        group.fkIdTrainingPrograms = fkIdTrainingPrograms;
+        await group.save();
+        return group;
     } catch (error) {
-        throw new Error(`Error al actualizar el evento ${error.message}`);
+        throw new Error(`Error al actualizar el grupo ${error.message}`);
     }
 }
 
-// Ruta deleteEvent
-const deleteEvent = async (id) => { 
+// Ruta deleteGroup
+const deleteGroup = async (id) => { 
     try {
-        const event = await db.Events.findByPk(id);
-        if (!event) {
-            throw new Error('Evento no encontrado');
+        const group = await db.Groups.findByPk(id);
+        if (!group) {
+            throw new Error('Grupo no encontrado');
         }
-        await event.destroy();
-        return event;
+        await group.destroy();
+        return group;
     } catch (error) {
-        throw new Error(`Error al eliminar el evento ${error.message}`);
+        throw new Error(`Error al eliminar el grupo ${error.message}`);
     }
 }
 
-module.exports = { getAllEvents, getOneEvent, createEvent, updateEvent, deleteEvent };   // Exportamos las funciones para que puedan ser utilizadas en otros archivos};
+module.exports = { getAllGroup, getOneGroup, createGroup, updateGroup, deleteGroup };   // Exportamos las funciones para que puedan ser utilizadas en otros archivos};

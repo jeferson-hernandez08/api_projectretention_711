@@ -37,7 +37,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         references: {
           model: 'training_programs',   // Nombre de la tabla física en la base de datos referenciada.
-          key: 'idTrainingProgram'      // Columna id referenciada
+          key: 'id'      // Columna id referenciada
         },
         onUpdate: 'CASCADE',
         onDelete: 'RESTRICT'    // No se puede borrar una grupo si tienen programas de formacion

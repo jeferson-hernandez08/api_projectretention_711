@@ -56,7 +56,7 @@ const bodyParser = require('body-parser');     // Importar body-parser para mane
 //------
 app.get('/',(request, response)=>{
     response.send({
-        message: "API Activa"
+        message: "API Activa | En Funcionamiento"
     })
 })
 
