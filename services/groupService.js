@@ -25,7 +25,18 @@ const getAllGroups = async () => {
 // Ruta getOneGroup
 const getOneGroup = async (id) => {
     try {
-        const group = await db.Groups.findByPk(id);
+        const group = await db.Groups.findByPk(id, {
+            include: [
+                {
+                    model: db.TrainingPrograms,
+                    as: "trainingProgram",   
+                    attributes: ['id', 'name', 'level', 'version'],
+                },
+            ],
+            attributes: {
+                exclude: ['createdAt', 'updatedAt']
+            },
+        });
         return group;
     } catch (error) {
         throw new Error(`Error al traer el grupo ${error.message}`); 

@@ -2,45 +2,45 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('groups', {
+    await queryInterface.createTable('apprentices', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      file: {
+      documentType: {
         type: Sequelize.STRING
       },
-      trainingStart: {
-        type: Sequelize.DATEONLY
-      },
-      trainingEnd: {
-        type: Sequelize.DATEONLY
-      },
-      practiceStart: {
-        type: Sequelize.DATEONLY
-      },
-      practiceEnd: {
-        type: Sequelize.DATEONLY
-      },
-      managerName: {
+      document: {
         type: Sequelize.STRING
       },
-      shift: {
+      firtsName: {
         type: Sequelize.STRING
       },
-      modality: {
+      lastName: {
         type: Sequelize.STRING
       },
-      fkIdTrainingPrograms: {
+      phone: {
+        type: Sequelize.STRING
+      },
+      email: {
+        type: Sequelize.STRING
+      },
+      status: {
+        type: Sequelize.STRING
+      },
+      quarter: {
+        type: Sequelize.STRING
+      },
+      fkIdGroups: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'training_programs',   // Nombre de la tabla física en la base de datos referenciada.
-          key: 'id'      // Columna id referenciada
+          model: 'groups',   // Nombre de la tabla física en la base de datos referenciada.
+          key: 'id'          // Columna id referenciada
         },
         onUpdate: 'CASCADE',
-        onDelete: 'RESTRICT'    // No se puede borrar un programa de formacion si tiene grupos
+        onDelete: 'RESTRICT'    // No se puede borrar un grupo si tiene aprendices
       },
       createdAt: {
         allowNull: false,
@@ -53,6 +53,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('groups');
+    await queryInterface.dropTable('apprentices');
   }
 };

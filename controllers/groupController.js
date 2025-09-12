@@ -24,7 +24,7 @@ const getAllGroups  = async(req, resp) => {
 // Ruta getOneGroup 
 const getOneGroup = async (req, resp) => { 
     const id = req.params.id;   // Obtenemos el id de la categoria desde los parámetros de la solicitud
-    const group = await group_service.getOneGroup(id);   // Llamamos al servicio para obtener un usuario por su id
+    const group = await group_service.getOneGroup(id);   // Llamamos al servicio para obtener un grupo por su id
     if (group) 
         resp.status(200).send({
             "status": "Ok", 
