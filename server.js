@@ -71,7 +71,7 @@ app.use(bodyParser.json());                          // Para que el servidor pue
 app.use('/api/v1/trainingPrograms', require('./api/v1/trainingProgram.routes'));   // Ruta para programas de formacion
 app.use('/api/v1/groups', require('./api/v1/group.routes'));                       // Ruta para grupos
 app.use('/api/v1/apprentices', require('./api/v1/apprentice.routes'));             // Ruta para aprendices
-// app.use('/api/v1/rols', require('./api/v1/rol.routes'));    // Ruta para roles
+app.use('/api/v1/rols', require('./api/v1/rol.routes'));                           // Ruta para roles
 // app.use('/api/v1/users', require('./api/v1/user.routes'));    // Ruta para usuarios
 // app.use('/api/v1/auth', require('./api/v1/auth.routes'));     // Ruta para autenticación Login
 
