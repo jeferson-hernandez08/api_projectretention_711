@@ -13,10 +13,10 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
 
       // 👇 Un rol tiene tiene muchos usuarios
-      // Rols.hasMany(models.Users, {
-      //   foreignKey: 'fkIdRols',     // Llave foránea en la tabla usuarios
-      //   as: 'users'                   // Alias para acceder a los usuarios desde un rol | Capturamos los usuarios desde un rol (Opcional)
-      // });
+      Rols.hasMany(models.Users, {
+        foreignKey: 'fkIdRols',     // Llave foránea en la tabla usuarios
+        as: 'users'                   // Alias para acceder a los usuarios desde un rol | Capturamos los usuarios desde un rol (Opcional)
+      });
 
     }
   }
