@@ -18,6 +18,12 @@ module.exports = (sequelize, DataTypes) => {
         as: 'causes'                   // Alias para acceder a las causas desde un categoria | Capturamos las causas desde una categoria (Opcional)
       });
 
+       // 👇 Una categoria tiene muchas estrategias
+      Categories.hasMany(models.Strategies, {
+        foreignKey: 'fkIdCategories',       // Llave foránea en la tabla estrategias
+        as: 'strategies'                   // Alias para acceder a las estrategias desde un categoria | Capturamos las estartegias desde una categoria (Opcional)
+      });
+
     }
   }
   Categories.init({

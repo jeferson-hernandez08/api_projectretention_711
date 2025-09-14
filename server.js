@@ -76,6 +76,7 @@ app.use('/api/v1/users', require('./api/v1/user.routes'));                      
 app.use('/api/v1/reports', require('./api/v1/report.routes'));                     // Ruta para reportes
 app.use('/api/v1/categories', require('./api/v1/category.routes'));                // Ruta para categorias
 app.use('/api/v1/causes', require('./api/v1/cause.routes'));                       // Ruta para causas
+app.use('/api/v1/strategies', require('./api/v1/strategy.routes'));                // Ruta para estrategias
 // app.use('/api/v1/auth', require('./api/v1/auth.routes'));     // Ruta para autenticación Login
 
 // Ruta para categories (Prueba)
