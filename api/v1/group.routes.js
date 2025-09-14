@@ -1,9 +1,9 @@
 const { Router } = require('express');
 const router = Router(); // Creamos una instancia del Router
 
-const group_controller = require('../../controllers/groupController');   // Importamos el controlador de categorias
+const group_controller = require('../../controllers/groupController');   // Importamos el controlador de grupos
 
-router.get('/testGroupApi', group_controller.testGroupAPI); // Ruta para probar la API de categorias
+router.get('/testGroupApi', group_controller.testGroupAPI); // Ruta para probar la API de grupos
 router.get('/', group_controller.getAllGroups); 
 router.get('/:id', group_controller.getOneGroup); 
 router.post('/', group_controller.createGroup); 

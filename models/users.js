@@ -18,6 +18,12 @@ module.exports = (sequelize, DataTypes) => {
         as: 'rol'            // Alias para acceder al rol desde un usuario | Capturamos el rol desde un usuario 
       });
 
+      // 👇 Un usuario tiene muchos reportes
+      Users.hasMany(models.Reports, {
+        foreignKey: 'fkIdUsers',        // Llave foránea en la tabla usuarios
+        as: 'reports'                   // Alias para acceder a los reportes desde un usuario | Capturamos los reportes desde un usuario (Opcional)
+      });
+
     }
   }
   Users.init({

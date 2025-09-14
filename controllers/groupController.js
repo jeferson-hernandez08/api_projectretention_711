@@ -1,4 +1,4 @@
-const group_service = require('../services/groupService');   // Importamos el servicio de gupos
+const group_service = require('../services/groupService');   // Importamos el servicio de grupos
 
 const testGroupAPI = (req, resp) => {
     console.log("TestGroupAPI");
