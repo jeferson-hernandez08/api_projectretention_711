@@ -30,6 +30,12 @@ module.exports = (sequelize, DataTypes) => {
         as: 'interventions'                   // Alias para acceder a las intervenciones desde un reporte | Capturamos las intervenciones desde un reporte (Opcional)
       });
 
+      // 👇 Un reporte tiene muchas causas_reportes
+      Reports.hasMany(models.CausesReports, {
+        foreignKey: 'fkIdReports',             // Llave foránea en la tabla causas_reportes
+        as: 'causesReports'                   // Alias para acceder a las causasReportes desde un reporte | Capturamos las causasReportes desde un reporte (Opcional)
+      });
+
     }
   }
   Reports.init({
