@@ -16,13 +16,31 @@ module.exports = {
         type: Sequelize.TEXT
       },
       fkIdStrategies: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'strategies',       // Nombre de la tabla física en la base de datos referenciada.
+          key: 'id'                  // Columna id referenciada
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT'         // No se puede borrar una estrategia si tiene intervenciones
       },
       fkIdReports: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'reports',       // Nombre de la tabla física en la base de datos referenciada.
+          key: 'id'               // Columna id referenciada
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT'      // No se puede borrar un reporte si tiene intervenciones
       },
       fkIdUsers: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'users',       // Nombre de la tabla física en la base de datos referenciada.
+          key: 'id'             // Columna id referenciada
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT'    // No se puede borrar un usuario si tiene intervenciones
       },
       createdAt: {
         allowNull: false,

@@ -18,6 +18,12 @@ module.exports = (sequelize, DataTypes) => {
         as: 'category'                 // Alias para acceder a la categoria desde una estrategia | Capturamos la categoria desde una estrategia 
       });
 
+      // 👇 Una estrategia tiene tiene muchas intervenciones
+      Strategies.hasMany(models.Interventions, {
+        foreignKey: 'fkIdStrategies',         // Llave foránea en la tabla intervenciones
+        as: 'interventions'                   // Alias para acceder a las intervenciones desde uns estrategia | Capturamos las intervenciones desde una estrategia (Opcional)
+      });
+
     }
   }
   Strategies.init({

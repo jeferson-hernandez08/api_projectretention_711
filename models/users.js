@@ -24,6 +24,12 @@ module.exports = (sequelize, DataTypes) => {
         as: 'reports'                   // Alias para acceder a los reportes desde un usuario | Capturamos los reportes desde un usuario (Opcional)
       });
 
+      // 👇 Un usuario tiene muchas intervenciones
+      Users.hasMany(models.Interventions, {
+        foreignKey: 'fkIdUsers',            // Llave foránea en la tabla intervenciones
+        as: 'interventions'                 // Alias para acceder a las intervenciones desde un usuario | Capturamos las intervenciones desde un usuario (Opcional)
+      });
+
     }
   }
   Users.init({
