@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/jeferson-hernandez08/api_projectretention_711#readme",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "mysql2": "^3.14.5",
