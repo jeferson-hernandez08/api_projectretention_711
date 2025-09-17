@@ -13,7 +13,9 @@ module.exports = {
         email: 'juan.perez@sena.edu.co',
         status: 'En formación',
         quarter: 'I',
-        fkIdGroups: 1 // Técnico en Sistemas
+        fkIdGroups: 1, // Técnico en Sistemas
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         documentType: 'CC',
@@ -24,7 +26,9 @@ module.exports = {
         email: 'maria.rodriguez@sena.edu.co',
         status: 'En formación',
         quarter: 'II',
-        fkIdGroups: 1
+        fkIdGroups: 1,
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         documentType: 'TI',
@@ -35,7 +39,9 @@ module.exports = {
         email: 'carlos.gomez@sena.edu.co',
         status: 'En práctica',
         quarter: 'III',
-        fkIdGroups: 2 // Técnico en Mantenimiento de Equipos de Cómputo
+        fkIdGroups: 2, // Técnico en Mantenimiento de Equipos de Cómputo
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         documentType: 'CC',
@@ -46,7 +52,9 @@ module.exports = {
         email: 'laura.martinez@sena.edu.co',
         status: 'Desertado',
         quarter: 'II',
-        fkIdGroups: 3 // Técnico en Programación de Software
+        fkIdGroups: 3, // Técnico en Programación de Software
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         documentType: 'CC',
@@ -57,7 +65,9 @@ module.exports = {
         email: 'andres.salazar@sena.edu.co',
         status: 'En práctica',
         quarter: 'IV',
-        fkIdGroups: 4 // Tecnólogo en ADSO
+        fkIdGroups: 4, // Tecnólogo en ADSO
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         documentType: 'CC',
@@ -68,7 +78,9 @@ module.exports = {
         email: 'diana.morales@sena.edu.co',
         status: 'Certificado',
         quarter: 'IV',
-        fkIdGroups: 5 // Tecnólogo en Redes de Datos
+        fkIdGroups: 5, // Tecnólogo en Redes de Datos
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         documentType: 'TI',
@@ -79,7 +91,9 @@ module.exports = {
         email: 'felipe.castano@sena.edu.co',
         status: 'En formación',
         quarter: 'I',
-        fkIdGroups: 6 // Tecnólogo en Gestión de Proyectos de Software
+        fkIdGroups: 6, // Tecnólogo en Gestión de Proyectos de Software
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
       
     ], {});

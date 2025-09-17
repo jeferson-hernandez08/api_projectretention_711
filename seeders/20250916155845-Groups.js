@@ -14,7 +14,9 @@ module.exports = {
         managerName: 'Carlos Gómez',
         shift: 'Diurna',
         modality: 'Presencial',
-        fkIdTrainingPrograms: 1 // Técnico en Sistemas
+        fkIdTrainingPrograms: 1, // Técnico en Sistemas
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         file: '2837466',
@@ -25,7 +27,9 @@ module.exports = {
         managerName: 'Laura Rodríguez',
         shift: 'Nocturna',
         modality: 'Presencial',
-        fkIdTrainingPrograms: 3 // Técnico en Mantenimiento de Equipos de Cómputo
+        fkIdTrainingPrograms: 3, // Técnico en Mantenimiento de Equipos de Cómputo
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         file: '2837467',
@@ -36,7 +40,9 @@ module.exports = {
         managerName: 'Andrés Pérez',
         shift: 'Mixta',
         modality: 'Virtual',
-        fkIdTrainingPrograms: 5 // Técnico en Programación de Software
+        fkIdTrainingPrograms: 5, // Técnico en Programación de Software
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
 
       // === Tecnólogos ===
@@ -49,7 +55,9 @@ module.exports = {
         managerName: 'María Fernanda López',
         shift: 'Diurna',
         modality: 'Presencial',
-        fkIdTrainingPrograms: 2 // Tecnólogo en Análisis y Desarrollo de Software
+        fkIdTrainingPrograms: 2, // Tecnólogo en Análisis y Desarrollo de Software
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         file: '3849202',
@@ -60,7 +68,9 @@ module.exports = {
         managerName: 'Ricardo Salazar',
         shift: 'Nocturna',
         modality: 'Presencial',
-        fkIdTrainingPrograms: 4 // Tecnólogo en Gestión de Redes de Datos
+        fkIdTrainingPrograms: 4, // Tecnólogo en Gestión de Redes de Datos
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         file: '3849203',
@@ -71,7 +81,9 @@ module.exports = {
         managerName: 'Diana Morales',
         shift: 'Mixta',
         modality: 'Virtual',
-        fkIdTrainingPrograms: 6 // Tecnólogo en Gestión de Proyectos de Desarrollo de Software
+        fkIdTrainingPrograms: 6, // Tecnólogo en Gestión de Proyectos de Desarrollo de Software
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
 
     ], {});

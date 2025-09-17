@@ -17,7 +17,9 @@ module.exports = {
         manager: true,
         fkIdRols: 1, // Administrador
         passwordResetToken: null,
-        passwordResetExpires: null
+        passwordResetExpires: null,
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         firstName: 'María',
@@ -30,7 +32,9 @@ module.exports = {
         manager: false,
         fkIdRols: 2, // Instructor
         passwordResetToken: null,
-        passwordResetExpires: null
+        passwordResetExpires: null,
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         firstName: 'Andrés',
@@ -43,7 +47,9 @@ module.exports = {
         manager: true,
         fkIdRols: 3, // Coordinador
         passwordResetToken: null,
-        passwordResetExpires: null
+        passwordResetExpires: null,
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         firstName: 'Laura',
@@ -56,7 +62,9 @@ module.exports = {
         manager: false,
         fkIdRols: 4, // Profesional de Bienestar
         passwordResetToken: null,
-        passwordResetExpires: null
+        passwordResetExpires: null,
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         firstName: 'Santiago',
@@ -69,7 +77,9 @@ module.exports = {
         manager: false,
         fkIdRols: 5, // Aprendiz Vocero
         passwordResetToken: null,
-        passwordResetExpires: null
+        passwordResetExpires: null,
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
 
     ], {});
