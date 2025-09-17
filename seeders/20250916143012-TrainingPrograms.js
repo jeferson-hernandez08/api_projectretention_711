@@ -7,58 +7,42 @@ module.exports = {
       {
         name: 'Técnico en Sistemas',
         level: 'Técnico',
-        version: '102',
-        createdAt: new Date(),
-        updatedAt: new Date()
+        version: '102'
       },
       {
         name: 'Tecnólogo en Análisis y Desarrollo de Software',
         level: 'Tecnólogo',
-        version: '228',
-        createdAt: new Date(),
-        updatedAt: new Date()
+        version: '228'
       },
       {
         name: 'Técnico en Mantenimiento de Equipos de Cómputo',
         level: 'Técnico',
-        version: '115',
-        createdAt: new Date(),
-        updatedAt: new Date()
+        version: '115'
       },
       {
         name: 'Tecnólogo en Gestión de Redes de Datos',
         level: 'Tecnólogo',
-        version: '210',
-        createdAt: new Date(),
-        updatedAt: new Date()
+        version: '210'
       },
       {
         name: 'Técnico en Programación de Software',
         level: 'Técnico',
-        version: '134',
-        createdAt: new Date(),
-        updatedAt: new Date()
+        version: '134'
       },
       {
         name: 'Tecnólogo en Gestión de Proyectos de Desarrollo de Software',
         level: 'Tecnólogo',
-        version: '301',
-        createdAt: new Date(),
-        updatedAt: new Date()
+        version: '301'
       },
       {
         name: 'Técnico en Asistencia Administrativa',
         level: 'Técnico',
-        version: '120',
-        createdAt: new Date(),
-        updatedAt: new Date()
+        version: '120'
       },
       {
         name: 'Tecnólogo en Logística',
         level: 'Tecnólogo',
-        version: '180',
-        createdAt: new Date(),
-        updatedAt: new Date()
+        version: '180'
       }
     ], {});
 
