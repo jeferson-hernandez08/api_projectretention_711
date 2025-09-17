@@ -5,7 +5,6 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.bulkInsert('apprentices', [
       {
-        id: 1,
         documentType: 'CC',
         document: '1002456789',
         firtsName: 'Juan',
@@ -19,7 +18,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 2,
         documentType: 'CC',
         document: '1003456781',
         firtsName: 'María',
@@ -33,7 +31,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 3,
         documentType: 'TI',
         document: '1045879632',
         firtsName: 'Carlos',
@@ -47,7 +44,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 4,
         documentType: 'CC',
         document: '1098765432',
         firtsName: 'Laura',
@@ -61,7 +57,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 5,
         documentType: 'CC',
         document: '1076543210',
         firtsName: 'Andrés',
@@ -75,7 +70,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 6,
         documentType: 'CC',
         document: '1001234567',
         firtsName: 'Diana',
@@ -89,7 +83,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 7,
         documentType: 'TI',
         document: '1023456789',
         firtsName: 'Felipe',

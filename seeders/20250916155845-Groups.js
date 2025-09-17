@@ -6,7 +6,6 @@ module.exports = {
     await queryInterface.bulkInsert('groups', [
        // === Técnicos ===
       {
-        id: 1,
         file: '2837465',
         trainingStart: '2024-01-15',
         trainingEnd: '2024-07-15',
@@ -20,7 +19,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 2,
         file: '2837466',
         trainingStart: '2024-03-01',
         trainingEnd: '2024-09-01',
@@ -34,7 +32,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 3,
         file: '2837467',
         trainingStart: '2024-04-10',
         trainingEnd: '2024-10-10',
@@ -50,7 +47,6 @@ module.exports = {
 
       // === Tecnólogos ===
       {
-        id: 4,
         file: '3849201',
         trainingStart: '2023-09-01',
         trainingEnd: '2025-06-01',
@@ -64,7 +60,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 5,
         file: '3849202',
         trainingStart: '2024-02-15',
         trainingEnd: '2025-11-15',
@@ -78,7 +73,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 6,
         file: '3849203',
         trainingStart: '2024-05-10',
         trainingEnd: '2026-02-10',

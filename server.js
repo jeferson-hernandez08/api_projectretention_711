@@ -1,7 +1,7 @@
 const express = require('express')
 const app     = express()
 const bodyParser = require('body-parser');     // Importar body-parser para manejar datos JSON
-// const cors = require('cors');                  // 👈 Importa CORS
+const cors = require('cors');                  // 👈 Importa CORS
 
 //********CORS MEJORADO *******/
 // // 🔥 Configuración MEJORADA de CORS
@@ -51,7 +51,7 @@ const bodyParser = require('body-parser');     // Importar body-parser para mane
 
 //********CORS BASICO *******/
 //Uso de cors 👇🏼
-// app.use(cors());
+app.use(cors());
 
 //------
 app.get('/',(request, response)=>{

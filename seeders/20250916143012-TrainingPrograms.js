@@ -5,7 +5,6 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.bulkInsert('training_programs', [
       {
-        id: 1,
         name: 'Técnico en Sistemas',
         level: 'Técnico',
         version: '102',
@@ -13,7 +12,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 2,
         name: 'Tecnólogo en Análisis y Desarrollo de Software',
         level: 'Tecnólogo',
         version: '228',
@@ -21,7 +19,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 3,
         name: 'Técnico en Mantenimiento de Equipos de Cómputo',
         level: 'Técnico',
         version: '115',
@@ -29,7 +26,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 4,
         name: 'Tecnólogo en Gestión de Redes de Datos',
         level: 'Tecnólogo',
         version: '210',
@@ -37,7 +33,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 5,
         name: 'Técnico en Programación de Software',
         level: 'Técnico',
         version: '134',
@@ -45,7 +40,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 6,
         name: 'Tecnólogo en Gestión de Proyectos de Desarrollo de Software',
         level: 'Tecnólogo',
         version: '301',
@@ -53,7 +47,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 7,
         name: 'Técnico en Asistencia Administrativa',
         level: 'Técnico',
         version: '120',
@@ -61,7 +54,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 8,
         name: 'Tecnólogo en Logística',
         level: 'Tecnólogo',
         version: '180',
