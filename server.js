@@ -79,15 +79,14 @@ app.use('/api/v1/causes', require('./api/v1/cause.routes'));                    
 app.use('/api/v1/strategies', require('./api/v1/strategy.routes'));                // Ruta para estrategias
 app.use('/api/v1/interventions', require('./api/v1/intervention.routes'));         // Ruta para intervenciones
 app.use('/api/v1/causesReports', require('./api/v1/causeReport.routes'));          // Ruta para causas reportes
-// app.use('/api/v1/auth', require('./api/v1/auth.routes'));     // Ruta para autenticación Login
+app.use('/api/v1/auth', require('./api/v1/auth.routes'));                          // Ruta para autenticación Login
 
 // Ruta para categories (Prueba)
 //app.use('/api/categories', require('./api/categories'));    // Ruta para categorias
-
 
 app.listen(app.get('PORT'), ()=>{
     console.log(`🚀 Servidor corriendo en el PUERTO: ${app.get('PORT')}`)
     console.log(`🌐 URL de acceso: http://localhost:${app.get('PORT')}`)
     console.log(`🔧 CORS configurado para desarrollo`)
-    // console.log(`🔐 Ruta de autenticación: http://localhost:${app.get('PORT')}/api/v1/auth/login`) 
+    console.log(`🔐 Ruta de autenticación: http://localhost:${app.get('PORT')}/api/v1/auth/login`) 
 })
