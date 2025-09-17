@@ -12,7 +12,7 @@ module.exports = {
         email: 'carlos.ramirez@sena.edu.co',
         phone: '3104567890',
         document: '1001234567',
-        password: hashedPassword,
+        password: '123456',
         coordinadorType: 'No es coordinador',
         manager: true,
         fkIdRols: 1, // Administrador
