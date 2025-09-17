@@ -10,7 +10,8 @@
     "migrate:undo": "node ./node_modules/sequelize-cli/lib/sequelize db:migrate:undo:all --env test",
     "seed": "node ./node_modules/sequelize-cli/lib/sequelize db:seed:all --env test",
     "seed:undo": "node ./node_modules/sequelize-cli/lib/sequelize db:seed:undo:all --env test",
-    "reset-db": "node ./node_modules/sequelize-cli/lib/sequelize db:drop --env test && node ./node_modules/sequelize-cli/lib/sequelize db:create --env test && node ./node_modules/sequelize-cli/lib/sequelize db:migrate --env test"
+    
+    "reset-db": "node reset-db.js"
   },
   "repository": {
     "type": "git",
