@@ -53,7 +53,7 @@ module.exports = {
       },
       {
         fkIdReports: 3,
-        fkIdCauses: 14, // Carga académica
+        fkIdCauses: 13, // Carga académica
         createdAt: new Date(),
         updatedAt: new Date()
       },
