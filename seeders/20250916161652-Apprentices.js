@@ -12,7 +12,7 @@ module.exports = {
         phone: '3104567890',
         email: 'juan.perez@sena.edu.co',
         status: 'En formación',
-        quarter: 'I',
+        quarter: '1',
         fkIdGroups: 1, // Técnico en Sistemas
         createdAt: new Date(),
         updatedAt: new Date()
@@ -25,7 +25,7 @@ module.exports = {
         phone: '3129876543',
         email: 'maria.rodriguez@sena.edu.co',
         status: 'En formación',
-        quarter: 'II',
+        quarter: '2',
         fkIdGroups: 1,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -38,7 +38,7 @@ module.exports = {
         phone: '3012345678',
         email: 'carlos.gomez@sena.edu.co',
         status: 'En práctica',
-        quarter: 'III',
+        quarter: '3',
         fkIdGroups: 2, // Técnico en Mantenimiento de Equipos de Cómputo
         createdAt: new Date(),
         updatedAt: new Date()
@@ -51,7 +51,7 @@ module.exports = {
         phone: '3204567890',
         email: 'laura.martinez@sena.edu.co',
         status: 'Desertado',
-        quarter: 'II',
+        quarter: '2',
         fkIdGroups: 3, // Técnico en Programación de Software
         createdAt: new Date(),
         updatedAt: new Date()
@@ -64,7 +64,7 @@ module.exports = {
         phone: '3156789012',
         email: 'andres.salazar@sena.edu.co',
         status: 'En práctica',
-        quarter: 'IV',
+        quarter: '4',
         fkIdGroups: 4, // Tecnólogo en ADSO
         createdAt: new Date(),
         updatedAt: new Date()
@@ -77,7 +77,7 @@ module.exports = {
         phone: '3167890123',
         email: 'diana.morales@sena.edu.co',
         status: 'Certificado',
-        quarter: 'IV',
+        quarter: '4',
         fkIdGroups: 5, // Tecnólogo en Redes de Datos
         createdAt: new Date(),
         updatedAt: new Date()
@@ -90,7 +90,7 @@ module.exports = {
         phone: '3114567890',
         email: 'felipe.castano@sena.edu.co',
         status: 'En formación',
-        quarter: 'I',
+        quarter: '1',
         fkIdGroups: 6, // Tecnólogo en Gestión de Proyectos de Software
         createdAt: new Date(),
         updatedAt: new Date()
