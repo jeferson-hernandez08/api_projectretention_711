@@ -8,7 +8,7 @@ module.exports = {
         creationDate: new Date('2025-03-01'),
         description: 'Aprendiz presenta problemas de salud y desea abandonar el programa.',
         addressing: 'Coordinador Académico',
-        state: 'Pendiente',
+        state: 'Registrado',
         fkIdApprentices: 1, // Juan Pérez
         fkIdUsers: 2, // María Gómez - Instructor
         createdAt: new Date(),
@@ -38,7 +38,7 @@ module.exports = {
         creationDate: new Date('2025-03-15'),
         description: 'Aprendiz notificó oficialmente que abandona el programa por motivos personales.',
         addressing: 'Coordinador de Formación',
-        state: 'Cerrado',
+        state: 'Retenido',
         fkIdApprentices: 4, // Laura Martínez (aprendiz)
         fkIdUsers: 1, // Carlos Ramírez - Administrador
         createdAt: new Date(),
@@ -48,7 +48,7 @@ module.exports = {
         creationDate: new Date('2025-03-20'),
         description: 'Aprendiz con reiteradas inasistencias injustificadas.',
         addressing: 'Coordinador Académico',
-        state: 'Pendiente',
+        state: 'Desertado',
         fkIdApprentices: 5, // Andrés Salazar
         fkIdUsers: 2, // María Gómez - Instructor
         createdAt: new Date(),
