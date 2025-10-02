@@ -136,4 +136,52 @@ const deleteCauseReport = async (id) => {
     }
 }
 
-module.exports = { getAllCausesReports, getOneCauseReport, createCauseReport, updateCauseReport, deleteCauseReport };   // Exportamos las funciones para que puedan ser utilizadas en otros archivos
+// Funcion para Obtener causes_reports por fkIdReports |  endpoint que permite filtrar causes_reports por fkIdReports
+const getCausesReportsByReportId = async (fkIdReports) => {
+    try {
+        const causesReports = await db.CausesReports.findAll({
+            where: {
+                fkIdReports: fkIdReports
+            },
+            include: [
+                {
+                    model: db.Reports,
+                    as: "report",
+                    attributes: ['id', 'creationDate', 'description', 'addressing', 'state'],
+                    include: [
+                        {
+                            model: db.Apprentices,
+                            as: "apprentice",
+                            attributes: ['id', 'document', 'firtsName', 'lastName']
+                        },
+                        {
+                            model: db.Users,
+                            as: "user",
+                            attributes: ['id', 'firstName', 'lastName', 'email']
+                        }
+                    ]
+                },
+                {
+                    model: db.Causes,
+                    as: "cause",
+                    attributes: ['id', 'cause', 'variable'],
+                    include: [
+                        {
+                            model: db.Categories,
+                            as: "category",
+                            attributes: ['id', 'name', 'description']
+                        }
+                    ]
+                }
+            ],
+            attributes: {
+                exclude: ['createdAt', 'updatedAt']
+            },
+        });
+        return causesReports;
+    } catch (error) {
+        throw new Error(`Error al traer las causas_reports por reportId: ${error.message}`); 
+    }    
+}
+
+module.exports = { getAllCausesReports, getOneCauseReport, createCauseReport, updateCauseReport, deleteCauseReport, getCausesReportsByReportId   };   // Exportamos las funciones para que puedan ser utilizadas en otros archivos

@@ -73,11 +73,53 @@ const deleteCauseReport = async (req, resp) => {
         resp.status(400).send({"status": "FAILED", data: deleteCauseReport});
 };
 
+// Funcion para Obtener causes_reports por fkIdReports |  endpoint que permite filtrar causes_reports por fkIdReports
+const getCausesReportsByReportId = async (req, resp) => { 
+    const { fkIdReports } = req.query;   // Obtenemos el fkIdReports desde los parámetros de consulta
+    
+    if (!fkIdReports) {
+        return resp.status(400).send({
+            "status": "FAILED", 
+            "message": "El parámetro fkIdReports es requerido"
+        });
+    }
+
+    try {
+        const causesReports = await causeReport_service.getCausesReportsByReportId(fkIdReports);
+        
+        if (causesReports && causesReports.length > 0) {
+            resp.status(200).send({
+                "status": "Ok", 
+                "message": "CausesReports obtenidos con éxito", 
+                "data": causesReports
+            });
+        } else {
+            resp.status(200).send({
+                "status": "Ok", 
+                "message": "No se encontraron relaciones para este reporte", 
+                "data": []
+            });
+        }
+    } catch (error) {
+        resp.status(400).send({
+            "status": "FAILED", 
+            "message": "Error al obtener los causes_reports por reporte"
+        });
+    }
+
+    // Por ejemplo:
+    // Cuando eliminemos un reporte con ID = 3: }
+    // Solo se eliminarán las relaciones causes_reports donde fkIdReports = 3 con todas las fkIdCauses de ese report: fkIdReports = 3
+    // Las relaciones de otros reportes (fkIdReports = 2, 4, 5, etc.) permanecerán intactas
+    // Este endpoint nos permite buscar relaciones por fkIdReports
+}
+
 module.exports = {
     testCauseReportAPI, 
     getAllCausesReports, 
     getOneCauseReport, 
     createCauseReport, 
     updateCauseReport, 
-    deleteCauseReport
+    deleteCauseReport,
+    getCausesReportsByReportId  
 };   // Exportamos las funciones para que puedan ser utilizadas en otros archivos

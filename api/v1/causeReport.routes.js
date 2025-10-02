@@ -9,6 +9,7 @@ router.get('/:id', causeReport_controller.getOneCauseReport);
 router.post('/', causeReport_controller.createCauseReport); 
 router.put('/:id', causeReport_controller.updateCauseReport); 
 router.delete('/:id', causeReport_controller.deleteCauseReport); 
+router.get('/by-report', causeReport_controller.getCausesReportsByReportId); // Ruta endpoint que permite filtrar causes_reports por fkIdReports
 
 // Exportar el módulo
 module.exports = router;    // Exportamos el router para que pueda ser utilizado en otros archivos
