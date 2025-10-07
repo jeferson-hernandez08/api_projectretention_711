@@ -145,8 +145,12 @@ const authController = {
   forgotPassword: async function (req, res) {
     try {
       const { email } = req.body;
-      
+
       console.log('📧 Solicitando recuperación para:', email);
+      console.log('🔐 Variables de entorno:');
+      console.log('   EMAIL_FROM:', process.env.EMAIL_FROM ? '✅ Configurado' : '❌ NO configurado');
+      console.log('   EMAIL_PASS:', process.env.EMAIL_PASS ? '✅ Configurado' : '❌ NO configurado');
+      console.log('   FRONTEND_URL:', process.env.FRONTEND_URL);
       
       const user = await Users.findOne({
         where: { email: email }
@@ -160,6 +164,8 @@ const authController = {
         });
       }
 
+      console.log('✅ Usuario encontrado:', user.email);
+
       // Generar token de restablecimiento
       const token = crypto.randomBytes(32).toString("hex");
       const expires = Date.now() + 1000 * 60 * 60; // 1 hora
@@ -171,6 +177,9 @@ const authController = {
       const resetLink = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/reset-password?token=${token}`;
       
       console.log('📤 Enviando correo de recuperación a:', email);
+      console.log('   FROM:', process.env.EMAIL_FROM);
+      console.log('   TO:', user.email);
+      console.log('   RESET LINK:', resetLink);
       
       // Enviar correo electrónico
       await sendEmail({
@@ -211,9 +220,12 @@ const authController = {
       
     } catch (error) {
       console.error("💥 Error al enviar el correo de recuperación:", error);
+      console.error("💥 Stack trace:", error.stack);
+
       return res.status(500).json({ 
         status: 'Error', 
-        message: 'Error al enviar el correo de recuperación' 
+        message: 'Error interno del servidor al procesar la recuperación',
+        error: error.message // 👈 Esto ayuda a debug
       });
     }
   },
