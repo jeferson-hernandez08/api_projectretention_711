@@ -1,9 +1,9 @@
 const { Users, Rols } = require('../models');
 const jwt = require('jsonwebtoken');
+const sendEmail = require('../utils/email');
 const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const { Op } = require('sequelize');
-const nodemailer = require('nodemailer'); // ✅ AGREGAR ESTA IMPORTACIÓN
 
 const authController = {
   // 🔐 LOGIN mejorado con bcrypt
@@ -141,20 +141,20 @@ const authController = {
     }
   },
 
-  // 📧 RECUPERAR CONTRASEÑA - VERSIÓN CORREGIDA
+  // 📧 RECUPERAR CONTRASEÑA - USANDO SENDGRID API DIRECTAMENTE
   forgotPassword: async (req, res) => {
     try {
       const { email } = req.body;
       
       console.log(`📧 Solicitando recuperación para: ${email}`);
       console.log('🔐 Variables de entorno verificadas:');
+      console.log(`   SENDGRID_API_KEY: ${process.env.SENDGRID_API_KEY ? '✅ Configurado' : '❌ No configurado'}`);
       console.log(`   EMAIL_FROM: ${process.env.EMAIL_FROM ? '✅ Configurado' : '❌ No configurado'}`);
-      console.log(`   EMAIL_PASS: ${process.env.EMAIL_PASS ? '✅ Configurado' : '❌ No configurado'}`);
       console.log(`   FRONTEND_URL: ${process.env.FRONTEND_URL ? '✅ Configurado' : '❌ No configurado'}`);
       
-      // Verificar que nodemailer esté disponible
-      if (typeof nodemailer === 'undefined') {
-        throw new Error('nodemailer no está disponible');
+      // Verificar que tenemos la API key de SendGrid
+      if (!process.env.SENDGRID_API_KEY) {
+        throw new Error('SENDGRID_API_KEY no está configurada');
       }
 
       // Buscar usuario
@@ -179,30 +179,17 @@ const authController = {
         passwordResetExpires: resetTokenExpires
       });
 
-      // Configurar transporter de Gmail usando variables de entorno
-      const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: process.env.EMAIL_FROM || 'jefer.hernandez1@gmail.com',
-          pass: process.env.EMAIL_PASS || 'ctlq gxdn alim ebbm'
-        },
-        // Configuración optimizada para Render
-        connectionTimeout: 30000, // 30 segundos
-        greetingTimeout: 30000,
-        socketTimeout: 30000,
-        secure: true,
-        tls: {
-          rejectUnauthorized: false
-        }
-      });
+      // Configurar SendGrid
+      const sgMail = require('@sendgrid/mail');
+      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
       // Crear enlace de reset
       const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
       
       // Configurar email
-      const mailOptions = {
-        from: `"Sistema Retención SENA" <${process.env.EMAIL_FROM || 'jefer.hernandez1@gmail.com'}>`,
+      const msg = {
         to: email,
+        from: process.env.EMAIL_FROM, // Debe estar verificado en SendGrid
         subject: 'Recuperación de contraseña - Sistema de Retención SENA',
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -224,21 +211,15 @@ const authController = {
         `
       };
 
-      console.log('📤 Intentando enviar email...');
-      console.log(`   FROM: ${process.env.EMAIL_FROM || 'jefer.hernandez1@gmail.com'}`);
+      console.log('📤 Intentando enviar email con SendGrid API...');
+      console.log(`   FROM: ${process.env.EMAIL_FROM}`);
       console.log(`   TO: ${email}`);
       console.log(`   RESET LINK: ${resetLink}`);
       
-      // Verificar la configuración primero
-      console.log('🔧 Verificando configuración de email...');
-      await transporter.verify();
-      console.log('✅ Configuración de email verificada correctamente');
-      
-      // Enviar email
-      const info = await transporter.sendMail(mailOptions);
+      // Enviar email usando la API de SendGrid
+      await sgMail.send(msg);
       
       console.log('✅ Email de recuperación enviado exitosamente');
-      console.log(`📨 Message ID: ${info.messageId}`);
       
       return res.status(200).json({
         status: 'Success',
@@ -246,8 +227,16 @@ const authController = {
       });
 
     } catch (error) {
-      console.error('💥 Error enviando correo:', error);
-      console.error('💥 Stack trace:', error.stack);
+      console.error('💥 Error enviando correo con SendGrid:', error);
+      
+      // Información más detallada del error
+      if (error.response) {
+        console.error('💥 SendGrid API Error Details:', {
+          statusCode: error.response.status,
+          body: error.response.body,
+          headers: error.response.headers
+        });
+      }
       
       return res.status(500).json({
         status: 'Error',
@@ -257,6 +246,8 @@ const authController = {
     }
   },
 
+
+  
   // 🔄 RESTABLECER CONTRASEÑA
   resetPassword: async (req, res) => {
     const { newPassword, token } = req.body;

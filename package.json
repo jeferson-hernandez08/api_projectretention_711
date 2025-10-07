@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/jeferson-hernandez08/api_projectretention_711#readme",
   "dependencies": {
+    "@sendgrid/mail": "^8.1.6",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
