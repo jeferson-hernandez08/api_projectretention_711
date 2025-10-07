@@ -230,32 +230,137 @@ const authController = {
   //   }
   // },
 
-  // En tu authController.js - reemplaza completamente la función forgotPassword
+  // // En tu authController.js - reemplaza completamente la función forgotPassword
+  // forgotPassword: async (req, res) => {
+  //   try {
+  //     const { email } = req.body;
+      
+  //     console.log(`📧 Solicitando recuperación para: ${email}`);
+  //     console.log('🔐 Variables de entorno verificadas:');
+  //     console.log(`   EMAIL_FROM: ${process.env.EMAIL_FROM ? '✅ Configurado' : '❌ No configurado'}`);
+  //     console.log(`   SENDGRID_API_KEY: ${process.env.SENDGRID_API_KEY ? '✅ Configurado' : '❌ No configurado'}`);
+  //     console.log(`   FRONTEND_URL: ${process.env.FRONTEND_URL ? '✅ Configurado' : '❌ No configurado'}`);
+      
+  //     // Buscar usuario
+  //     const user = await Users.findOne({ where: { email } });
+  //     if (!user) {
+  //       console.log('❌ Usuario no encontrado');
+  //       return res.status(404).json({
+  //         status: 'Error',
+  //         message: 'Usuario no encontrado'
+  //       });
+  //     }
+
+  //     console.log(`✅ Usuario encontrado: ${user.email}`);
+
+  //     // Generar token
+  //     const resetToken = crypto.randomBytes(32).toString('hex');
+  //     const resetTokenExpires = new Date(Date.now() + 60 * 60 * 1000); // 1 hora
+
+  //     // Guardar token en usuario
+  //     await user.update({
+  //       passwordResetToken: resetToken,
+  //       passwordResetExpires: resetTokenExpires
+  //     });
+
+  //     // Configurar SendGrid
+  //     const transporter = nodemailer.createTransport({
+  //       host: 'smtp.sendgrid.net',
+  //       port: 587,
+  //       secure: false,
+  //       auth: {
+  //         user: 'apikey', // Esto es literalmente 'apikey'
+  //         pass: process.env.SENDGRID_API_KEY, // Tu API Key completa de SendGrid
+  //       },
+  //       connectionTimeout: 10000,
+  //       greetingTimeout: 10000,
+  //       socketTimeout: 10000,
+  //     });
+
+  //     // Crear enlace de reset
+  //     const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+      
+  //     // Configurar email
+  //     const mailOptions = {
+  //       from: process.env.EMAIL_FROM, // Debe ser un email verificado en SendGrid
+  //       to: email,
+  //       subject: 'Recuperación de contraseña - Sistema de Retención SENA',
+  //       html: `
+  //         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+  //           <h2 style="color: #2E86AB;">Recuperación de Contraseña</h2>
+  //           <p>Hola ${user.firstName},</p>
+  //           <p>Has solicitado restablecer tu contraseña. Haz clic en el siguiente enlace:</p>
+  //           <a href="${resetLink}" 
+  //             style="background-color: #2E86AB; color: white; padding: 12px 24px; 
+  //                     text-decoration: none; border-radius: 4px; display: inline-block;">
+  //             Restablecer Contraseña
+  //           </a>
+  //           <p>Este enlace expirará en 1 hora.</p>
+  //           <p>Si no solicitaste este cambio, ignora este mensaje.</p>
+  //           <hr>
+  //           <p style="color: #666; font-size: 12px;">
+  //             Sistema de Retención de Aprendices - SENA
+  //           </p>
+  //         </div>
+  //       `
+  //     };
+
+  //     console.log('📤 Intentando enviar email con SendGrid...');
+  //     console.log(`   FROM: ${process.env.EMAIL_FROM}`);
+  //     console.log(`   TO: ${email}`);
+  //     console.log(`   RESET LINK: ${resetLink}`);
+      
+  //     // Verificar la configuración del transporter primero
+  //     console.log('🔧 Verificando configuración de SendGrid...');
+  //     await transporter.verify();
+  //     console.log('✅ Configuración de SendGrid verificada correctamente');
+      
+  //     // Enviar email
+  //     const info = await transporter.sendMail(mailOptions);
+      
+  //     console.log('✅ Email de recuperación enviado exitosamente');
+  //     console.log(`📨 Message ID: ${info.messageId}`);
+      
+  //     return res.status(200).json({
+  //       status: 'Success',
+  //       message: 'Email de recuperación enviado exitosamente'
+  //     });
+
+  //   } catch (error) {
+  //     console.error('💥 Error CRÍTICO enviando correo:', error);
+  //     console.error('💥 Error details:', {
+  //       code: error.code,
+  //       command: error.command,
+  //       response: error.response
+  //     });
+      
+  //     return res.status(500).json({
+  //       status: 'Error',
+  //       message: 'Error interno del servidor al procesar la recuperación',
+  //       error: error.message
+  //     });
+  //   }
+  // },
+
+  // En tu authController.js - usa este enfoque temporal
   forgotPassword: async (req, res) => {
     try {
       const { email } = req.body;
       
       console.log(`📧 Solicitando recuperación para: ${email}`);
-      console.log('🔐 Variables de entorno verificadas:');
-      console.log(`   EMAIL_FROM: ${process.env.EMAIL_FROM ? '✅ Configurado' : '❌ No configurado'}`);
-      console.log(`   SENDGRID_API_KEY: ${process.env.SENDGRID_API_KEY ? '✅ Configurado' : '❌ No configurado'}`);
-      console.log(`   FRONTEND_URL: ${process.env.FRONTEND_URL ? '✅ Configurado' : '❌ No configurado'}`);
       
       // Buscar usuario
       const user = await Users.findOne({ where: { email } });
       if (!user) {
-        console.log('❌ Usuario no encontrado');
         return res.status(404).json({
           status: 'Error',
           message: 'Usuario no encontrado'
         });
       }
 
-      console.log(`✅ Usuario encontrado: ${user.email}`);
-
       // Generar token
       const resetToken = crypto.randomBytes(32).toString('hex');
-      const resetTokenExpires = new Date(Date.now() + 60 * 60 * 1000); // 1 hora
+      const resetTokenExpires = new Date(Date.now() + 60 * 60 * 1000);
 
       // Guardar token en usuario
       await user.update({
@@ -263,26 +368,27 @@ const authController = {
         passwordResetExpires: resetTokenExpires
       });
 
-      // Configurar SendGrid
+      // **SOLUCIÓN TEMPORAL: Usar Gmail con configuración mejorada**
       const transporter = nodemailer.createTransport({
-        host: 'smtp.sendgrid.net',
-        port: 587,
-        secure: false,
+        service: 'gmail',
         auth: {
-          user: 'apikey', // Esto es literalmente 'apikey'
-          pass: process.env.SENDGRID_API_KEY, // Tu API Key completa de SendGrid
+          user: 'jefer.hernandez1@gmail.com',
+          pass: 'ctlq gxdn alim ebbm' // Tu app password de Gmail
         },
-        connectionTimeout: 10000,
-        greetingTimeout: 10000,
-        socketTimeout: 10000,
+        // Configuración optimizada para Render
+        connectionTimeout: 30000, // 30 segundos
+        greetingTimeout: 30000,
+        socketTimeout: 30000,
+        secure: true,
+        tls: {
+          rejectUnauthorized: false
+        }
       });
 
-      // Crear enlace de reset
       const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
       
-      // Configurar email
       const mailOptions = {
-        from: process.env.EMAIL_FROM, // Debe ser un email verificado en SendGrid
+        from: '"Sistema Retención SENA" <jefer.hernandez1@gmail.com>',
         to: email,
         subject: 'Recuperación de contraseña - Sistema de Retención SENA',
         html: `
@@ -305,21 +411,10 @@ const authController = {
         `
       };
 
-      console.log('📤 Intentando enviar email con SendGrid...');
-      console.log(`   FROM: ${process.env.EMAIL_FROM}`);
-      console.log(`   TO: ${email}`);
-      console.log(`   RESET LINK: ${resetLink}`);
+      console.log('📤 Enviando email con Gmail...');
+      await transporter.sendMail(mailOptions);
       
-      // Verificar la configuración del transporter primero
-      console.log('🔧 Verificando configuración de SendGrid...');
-      await transporter.verify();
-      console.log('✅ Configuración de SendGrid verificada correctamente');
-      
-      // Enviar email
-      const info = await transporter.sendMail(mailOptions);
-      
-      console.log('✅ Email de recuperación enviado exitosamente');
-      console.log(`📨 Message ID: ${info.messageId}`);
+      console.log('✅ Email enviado exitosamente');
       
       return res.status(200).json({
         status: 'Success',
@@ -327,12 +422,7 @@ const authController = {
       });
 
     } catch (error) {
-      console.error('💥 Error CRÍTICO enviando correo:', error);
-      console.error('💥 Error details:', {
-        code: error.code,
-        command: error.command,
-        response: error.response
-      });
+      console.error('💥 Error enviando correo:', error);
       
       return res.status(500).json({
         status: 'Error',
@@ -341,6 +431,7 @@ const authController = {
       });
     }
   },
+
 
   // 🔄 RESTABLECER CONTRASEÑA
   resetPassword: async (req, res) => {
