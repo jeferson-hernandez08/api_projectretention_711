@@ -4,6 +4,7 @@ const sendEmail = require('../utils/email');
 const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const { Op } = require('sequelize');
+const sgMail = require('@sendgrid/mail');   // SendGrid API
 
 const authController = {
   // 🔐 LOGIN mejorado con bcrypt
