@@ -142,90 +142,202 @@ const authController = {
   },
 
   // 📧 RECUPERAR CONTRASEÑA
-  forgotPassword: async function (req, res) {
+  // forgotPassword: async function (req, res) {
+  //   try {
+  //     const { email } = req.body;
+
+  //     console.log('📧 Solicitando recuperación para:', email);
+  //     console.log('🔐 Variables de entorno:');
+  //     console.log('   EMAIL_FROM:', process.env.EMAIL_FROM ? '✅ Configurado' : '❌ NO configurado');
+  //     console.log('   EMAIL_PASS:', process.env.EMAIL_PASS ? '✅ Configurado' : '❌ NO configurado');
+  //     console.log('   FRONTEND_URL:', process.env.FRONTEND_URL);
+      
+  //     const user = await Users.findOne({
+  //       where: { email: email }
+  //     });
+      
+  //     if (!user) {
+  //       console.log('❌ Usuario no encontrado para recuperación:', email);
+  //       return res.status(404).json({ 
+  //         status: 'Error', 
+  //         message: 'Usuario no encontrado' 
+  //       });
+  //     }
+
+  //     console.log('✅ Usuario encontrado:', user.email);
+
+  //     // Generar token de restablecimiento
+  //     const token = crypto.randomBytes(32).toString("hex");
+  //     const expires = Date.now() + 1000 * 60 * 60; // 1 hora
+      
+  //     user.passwordResetToken = token;
+  //     user.passwordResetExpires = new Date(expires);
+  //     await user.save();
+
+  //     const resetLink = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/reset-password?token=${token}`;
+      
+  //     console.log('📤 Enviando correo de recuperación a:', email);
+  //     console.log('   FROM:', process.env.EMAIL_FROM);
+  //     console.log('   TO:', user.email);
+  //     console.log('   RESET LINK:', resetLink);
+      
+  //     // Enviar correo electrónico
+  //     await sendEmail({
+  //       to: user.email,
+  //       subject: "Recuperación de contraseña - Sistema de Retención SENA",
+  //       html: `
+  //         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;">
+  //           <h2 style="color: #008550;">Sistema de Retención SENA</h2>
+  //           <p>Hola <strong>${user.firstName} ${user.lastName}</strong>,</p>
+
+  //           <p>Recibimos una solicitud para restablecer tu contraseña. Si no realizaste esta solicitud, puedes ignorar este mensaje.</p>
+
+  //           <p>Para restablecer tu contraseña, haz clic en el siguiente botón:</p>
+
+  //           <div style="text-align: center; margin: 30px 0;">
+  //             <a href="${resetLink}" style="background-color: #008550; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+  //               Restablecer Contraseña
+  //             </a>
+  //           </div>
+
+  //           <p>O también puedes copiar y pegar el siguiente enlace en tu navegador:</p>
+  //           <p style="word-break: break-all; color: #555;">${resetLink}</p>
+
+  //           <p>Este enlace expirará en <strong>1 hora</strong>.</p>
+
+  //           <hr style="margin-top: 40px;">
+  //           <p style="font-size: 12px; color: #888;">Este mensaje fue generado automáticamente por el Sistema de Retención SENA. No respondas a este correo.</p>
+  //         </div>
+  //       `,
+  //     });
+      
+  //     console.log('✅ Correo de recuperación enviado a:', email);
+      
+  //     return res.status(200).json({ 
+  //       status: 'Ok', 
+  //       message: 'Se ha enviado un correo para recuperar la contraseña' 
+  //     });
+      
+  //   } catch (error) {
+  //     console.error("💥 Error al enviar el correo de recuperación:", error);
+  //     console.error("💥 Stack trace:", error.stack);
+
+  //     return res.status(500).json({ 
+  //       status: 'Error', 
+  //       message: 'Error interno del servidor al procesar la recuperación',
+  //       error: error.message // 👈 Esto ayuda a debug
+  //     });
+  //   }
+  // },
+
+  // En tu authController.js - reemplaza completamente la función forgotPassword
+  forgotPassword: async (req, res) => {
     try {
       const { email } = req.body;
-
-      console.log('📧 Solicitando recuperación para:', email);
-      console.log('🔐 Variables de entorno:');
-      console.log('   EMAIL_FROM:', process.env.EMAIL_FROM ? '✅ Configurado' : '❌ NO configurado');
-      console.log('   EMAIL_PASS:', process.env.EMAIL_PASS ? '✅ Configurado' : '❌ NO configurado');
-      console.log('   FRONTEND_URL:', process.env.FRONTEND_URL);
       
-      const user = await Users.findOne({
-        where: { email: email }
-      });
+      console.log(`📧 Solicitando recuperación para: ${email}`);
+      console.log('🔐 Variables de entorno verificadas:');
+      console.log(`   EMAIL_FROM: ${process.env.EMAIL_FROM ? '✅ Configurado' : '❌ No configurado'}`);
+      console.log(`   SENDGRID_API_KEY: ${process.env.SENDGRID_API_KEY ? '✅ Configurado' : '❌ No configurado'}`);
+      console.log(`   FRONTEND_URL: ${process.env.FRONTEND_URL ? '✅ Configurado' : '❌ No configurado'}`);
       
+      // Buscar usuario
+      const user = await Users.findOne({ where: { email } });
       if (!user) {
-        console.log('❌ Usuario no encontrado para recuperación:', email);
-        return res.status(404).json({ 
-          status: 'Error', 
-          message: 'Usuario no encontrado' 
+        console.log('❌ Usuario no encontrado');
+        return res.status(404).json({
+          status: 'Error',
+          message: 'Usuario no encontrado'
         });
       }
 
-      console.log('✅ Usuario encontrado:', user.email);
+      console.log(`✅ Usuario encontrado: ${user.email}`);
 
-      // Generar token de restablecimiento
-      const token = crypto.randomBytes(32).toString("hex");
-      const expires = Date.now() + 1000 * 60 * 60; // 1 hora
-      
-      user.passwordResetToken = token;
-      user.passwordResetExpires = new Date(expires);
-      await user.save();
+      // Generar token
+      const resetToken = crypto.randomBytes(32).toString('hex');
+      const resetTokenExpires = new Date(Date.now() + 60 * 60 * 1000); // 1 hora
 
-      const resetLink = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/reset-password?token=${token}`;
+      // Guardar token en usuario
+      await user.update({
+        passwordResetToken: resetToken,
+        passwordResetExpires: resetTokenExpires
+      });
+
+      // Configurar SendGrid
+      const transporter = nodemailer.createTransport({
+        host: 'smtp.sendgrid.net',
+        port: 587,
+        secure: false,
+        auth: {
+          user: 'apikey', // Esto es literalmente 'apikey'
+          pass: process.env.SENDGRID_API_KEY, // Tu API Key completa de SendGrid
+        },
+        connectionTimeout: 10000,
+        greetingTimeout: 10000,
+        socketTimeout: 10000,
+      });
+
+      // Crear enlace de reset
+      const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
       
-      console.log('📤 Enviando correo de recuperación a:', email);
-      console.log('   FROM:', process.env.EMAIL_FROM);
-      console.log('   TO:', user.email);
-      console.log('   RESET LINK:', resetLink);
-      
-      // Enviar correo electrónico
-      await sendEmail({
-        to: user.email,
-        subject: "Recuperación de contraseña - Sistema de Retención SENA",
+      // Configurar email
+      const mailOptions = {
+        from: process.env.EMAIL_FROM, // Debe ser un email verificado en SendGrid
+        to: email,
+        subject: 'Recuperación de contraseña - Sistema de Retención SENA',
         html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;">
-            <h2 style="color: #008550;">Sistema de Retención SENA</h2>
-            <p>Hola <strong>${user.firstName} ${user.lastName}</strong>,</p>
-
-            <p>Recibimos una solicitud para restablecer tu contraseña. Si no realizaste esta solicitud, puedes ignorar este mensaje.</p>
-
-            <p>Para restablecer tu contraseña, haz clic en el siguiente botón:</p>
-
-            <div style="text-align: center; margin: 30px 0;">
-              <a href="${resetLink}" style="background-color: #008550; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold;">
-                Restablecer Contraseña
-              </a>
-            </div>
-
-            <p>O también puedes copiar y pegar el siguiente enlace en tu navegador:</p>
-            <p style="word-break: break-all; color: #555;">${resetLink}</p>
-
-            <p>Este enlace expirará en <strong>1 hora</strong>.</p>
-
-            <hr style="margin-top: 40px;">
-            <p style="font-size: 12px; color: #888;">Este mensaje fue generado automáticamente por el Sistema de Retención SENA. No respondas a este correo.</p>
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #2E86AB;">Recuperación de Contraseña</h2>
+            <p>Hola ${user.firstName},</p>
+            <p>Has solicitado restablecer tu contraseña. Haz clic en el siguiente enlace:</p>
+            <a href="${resetLink}" 
+              style="background-color: #2E86AB; color: white; padding: 12px 24px; 
+                      text-decoration: none; border-radius: 4px; display: inline-block;">
+              Restablecer Contraseña
+            </a>
+            <p>Este enlace expirará en 1 hora.</p>
+            <p>Si no solicitaste este cambio, ignora este mensaje.</p>
+            <hr>
+            <p style="color: #666; font-size: 12px;">
+              Sistema de Retención de Aprendices - SENA
+            </p>
           </div>
-        `,
-      });
-      
-      console.log('✅ Correo de recuperación enviado a:', email);
-      
-      return res.status(200).json({ 
-        status: 'Ok', 
-        message: 'Se ha enviado un correo para recuperar la contraseña' 
-      });
-      
-    } catch (error) {
-      console.error("💥 Error al enviar el correo de recuperación:", error);
-      console.error("💥 Stack trace:", error.stack);
+        `
+      };
 
-      return res.status(500).json({ 
-        status: 'Error', 
+      console.log('📤 Intentando enviar email con SendGrid...');
+      console.log(`   FROM: ${process.env.EMAIL_FROM}`);
+      console.log(`   TO: ${email}`);
+      console.log(`   RESET LINK: ${resetLink}`);
+      
+      // Verificar la configuración del transporter primero
+      console.log('🔧 Verificando configuración de SendGrid...');
+      await transporter.verify();
+      console.log('✅ Configuración de SendGrid verificada correctamente');
+      
+      // Enviar email
+      const info = await transporter.sendMail(mailOptions);
+      
+      console.log('✅ Email de recuperación enviado exitosamente');
+      console.log(`📨 Message ID: ${info.messageId}`);
+      
+      return res.status(200).json({
+        status: 'Success',
+        message: 'Email de recuperación enviado exitosamente'
+      });
+
+    } catch (error) {
+      console.error('💥 Error CRÍTICO enviando correo:', error);
+      console.error('💥 Error details:', {
+        code: error.code,
+        command: error.command,
+        response: error.response
+      });
+      
+      return res.status(500).json({
+        status: 'Error',
         message: 'Error interno del servidor al procesar la recuperación',
-        error: error.message // 👈 Esto ayuda a debug
+        error: error.message
       });
     }
   },
