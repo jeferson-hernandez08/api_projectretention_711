@@ -232,6 +232,113 @@ const authController = {
   // },
 
   // 📧 RECUPERAR CONTRASEÑA | Configuracion SendGrind API
+  // forgotPassword: async (req, res) => {
+  //   try {
+  //     const { email } = req.body;
+      
+  //     console.log(`📧 Solicitando recuperación para: ${email}`);
+      
+  //     // Buscar usuario
+  //     const user = await Users.findOne({ where: { email } });
+  //     if (!user) {
+  //       console.log('❌ Usuario no encontrado');
+  //       return res.status(404).json({
+  //         status: 'Error',
+  //         message: 'Usuario no encontrado'
+  //       });
+  //     }
+
+  //     console.log(`✅ Usuario encontrado: ${user.email}`);
+
+  //     // Generar token
+  //     const resetToken = crypto.randomBytes(32).toString('hex');
+  //     const resetTokenExpires = new Date(Date.now() + 60 * 60 * 1000);
+
+  //     // Guardar token en usuario
+  //     await user.update({
+  //       passwordResetToken: resetToken,
+  //       passwordResetExpires: resetTokenExpires
+  //     });
+
+  //     // Si no hay API key de SendGrid, usar modo desarrollo
+  //     if (!process.env.SENDGRID_API_KEY) {
+  //       console.log('🚨 MODO DESARROLLO - No hay SENDGRID_API_KEY');
+  //       const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+        
+  //       console.log('🔗 Link de recuperación (modo desarrollo):', resetLink);
+        
+  //       return res.status(200).json({
+  //         status: 'Success',
+  //         message: 'En modo desarrollo - Ver logs para el link de recuperación',
+  //         resetLink: resetLink // Solo en desarrollo
+  //       });
+  //     }
+
+  //     // Configurar SendGrid
+  //     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+  //     // Crear enlace de reset
+  //     const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+      
+  //     // Configurar email
+  //     const msg = {
+  //       to: email,
+  //       from: process.env.EMAIL_FROM,
+  //       subject: 'Recuperación de contraseña - Sistema de Retención SENA',
+  //       html: `
+  //         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+  //           <h2 style="color: #2E86AB;">Recuperación de Contraseña</h2>
+  //           <p>Hola ${user.firstName},</p>
+  //           <p>Has solicitado restablecer tu contraseña. Haz clic en el siguiente enlace:</p>
+  //           <a href="${resetLink}" 
+  //             style="background-color: #2E86AB; color: white; padding: 12px 24px; 
+  //                     text-decoration: none; border-radius: 4px; display: inline-block;">
+  //             Restablecer Contraseña
+  //           </a>
+  //           <p><strong>Este enlace expirará en 1 hora.</strong></p>
+  //           <p>Si no solicitaste este cambio, ignora este mensaje.</p>
+  //           <hr>
+  //           <p style="color: #666; font-size: 12px;">
+  //             Sistema de Retención de Aprendices - SENA
+  //           </p>
+  //         </div>
+  //       `
+  //     };
+
+  //     console.log('📤 Enviando email con SendGrid API...');
+  //     await sgMail.send(msg);
+      
+  //     console.log('✅ Email de recuperación enviado exitosamente');
+      
+  //     return res.status(200).json({
+  //       status: 'Success',
+  //       message: 'Email de recuperación enviado exitosamente'
+  //     });
+
+  //   } catch (error) {
+  //     console.error('💥 Error enviando correo:', error);
+      
+  //     // Si hay error con SendGrid, devolver el link en desarrollo
+  //     if (process.env.NODE_ENV !== 'production') {
+  //       const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+  //       console.log('🔗 Link de recuperación (fallback):', resetLink);
+        
+  //       return res.status(200).json({
+  //         status: 'Success',
+  //         message: 'Email no enviado, pero aquí está el link de recuperación',
+  //         resetLink: resetLink
+  //       });
+  //     }
+      
+  //     return res.status(500).json({
+  //       status: 'Error',
+  //       message: 'Error interno del servidor al procesar la recuperación',
+  //       error: error.message
+  //     });
+  //   }
+  // },
+
+  // 📧 RECUPERAR CONTRASEÑA | MODO PRUEBA CON LOGS
   forgotPassword: async (req, res) => {
     try {
       const { email } = req.body;
@@ -241,14 +348,11 @@ const authController = {
       // Buscar usuario
       const user = await Users.findOne({ where: { email } });
       if (!user) {
-        console.log('❌ Usuario no encontrado');
         return res.status(404).json({
           status: 'Error',
           message: 'Usuario no encontrado'
         });
       }
-
-      console.log(`✅ Usuario encontrado: ${user.email}`);
 
       // Generar token
       const resetToken = crypto.randomBytes(32).toString('hex');
@@ -260,79 +364,31 @@ const authController = {
         passwordResetExpires: resetTokenExpires
       });
 
-      // Si no hay API key de SendGrid, usar modo desarrollo
-      if (!process.env.SENDGRID_API_KEY) {
-        console.log('🚨 MODO DESARROLLO - No hay SENDGRID_API_KEY');
-        const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
-        
-        console.log('🔗 Link de recuperación (modo desarrollo):', resetLink);
-        
-        return res.status(200).json({
-          status: 'Success',
-          message: 'En modo desarrollo - Ver logs para el link de recuperación',
-          resetLink: resetLink // Solo en desarrollo
-        });
-      }
-
-      // Configurar SendGrid
-      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
-      // Crear enlace de reset
+      // **SOLUCIÓN: Mostrar link en consola y respuesta (para testing)**
       const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
       
-      // Configurar email
-      const msg = {
-        to: email,
-        from: process.env.EMAIL_FROM,
-        subject: 'Recuperación de contraseña - Sistema de Retención SENA',
-        html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #2E86AB;">Recuperación de Contraseña</h2>
-            <p>Hola ${user.firstName},</p>
-            <p>Has solicitado restablecer tu contraseña. Haz clic en el siguiente enlace:</p>
-            <a href="${resetLink}" 
-              style="background-color: #2E86AB; color: white; padding: 12px 24px; 
-                      text-decoration: none; border-radius: 4px; display: inline-block;">
-              Restablecer Contraseña
-            </a>
-            <p><strong>Este enlace expirará en 1 hora.</strong></p>
-            <p>Si no solicitaste este cambio, ignora este mensaje.</p>
-            <hr>
-            <p style="color: #666; font-size: 12px;">
-              Sistema de Retención de Aprendices - SENA
-            </p>
-          </div>
-        `
-      };
-
-      console.log('📤 Enviando email con SendGrid API...');
-      await sgMail.send(msg);
+      console.log('🎯 ====================================');
+      console.log('🎯 LINK DE RECUPERACIÓN DE CONTRASEÑA:');
+      console.log('🎯 ====================================');
+      console.log(`🔗 ${resetLink}`);
+      console.log('🎯 ====================================');
       
-      console.log('✅ Email de recuperación enviado exitosamente');
+      // Para producción, aquí iría el código de SendGrid
+      // Pero para testing, devolvemos el link directamente
       
       return res.status(200).json({
         status: 'Success',
-        message: 'Email de recuperación enviado exitosamente'
+        message: 'Proceso de recuperación completado. Revisa los logs del servidor para el link de recuperación.',
+        resetLink: resetLink, // En desarrollo, enviamos el link directamente
+        token: resetToken // Para debugging
       });
 
     } catch (error) {
-      console.error('💥 Error enviando correo:', error);
-      
-      // Si hay error con SendGrid, devolver el link en desarrollo
-      if (process.env.NODE_ENV !== 'production') {
-        const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
-        console.log('🔗 Link de recuperación (fallback):', resetLink);
-        
-        return res.status(200).json({
-          status: 'Success',
-          message: 'Email no enviado, pero aquí está el link de recuperación',
-          resetLink: resetLink
-        });
-      }
+      console.error('💥 Error en recuperación:', error);
       
       return res.status(500).json({
         status: 'Error',
-        message: 'Error interno del servidor al procesar la recuperación',
+        message: 'Error interno del servidor',
         error: error.message
       });
     }
