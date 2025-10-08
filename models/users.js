@@ -127,13 +127,20 @@ module.exports = (sequelize, DataTypes) => {
 
   // 🔄 HOOK: Encriptar contraseña al actualizar (solo si cambió)
   Users.beforeUpdate(async (user, options) => {
+    // Verificar si el campo password está siendo actualizado
     if (user.changed('password') && user.password) {
-      try {
-        user.password = await bcrypt.hash(user.password, 10);
-        console.log('✅ Contraseña actualizada y encriptada para:', user.email);
-      } catch (error) {
-        console.error('Error encriptando contraseña en actualización:', error);
-        throw error;
+      // Si la contraseña ya está encriptada (comienza con $2), no la encriptes de nuevo
+      if (!user.password.startsWith('$2')) {
+        try {
+          console.log('🔐 Encriptando contraseña en hook beforeUpdate...');
+          user.password = await bcrypt.hash(user.password, 10);
+          console.log('✅ Contraseña encriptada para:', user.email);
+        } catch (error) {
+          console.error('Error encriptando contraseña en actualización:', error);
+          throw error;
+        }
+      } else {
+        console.log('ℹ️ Contraseña ya encriptada, no se re-encripta');
       }
     }
   });
@@ -149,8 +156,12 @@ module.exports = (sequelize, DataTypes) => {
         };
       }
       
-      user.password = await bcrypt.hash(password, 10);
-      await user.save();
+      // 🔥 CORRECCIÓN: Encriptar antes de guardar
+      const hashedPassword = await bcrypt.hash(password, 10);
+      await Users.update(
+        { password: hashedPassword },
+        { where: { id: id } }
+      );
       
       return { 
         status: 200, 

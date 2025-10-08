@@ -13,6 +13,7 @@ const authController = {
       const { email, password } = req.body;
 
       console.log('📧 Intento de login con:', email);
+      console.log('🔐 Contraseña recibida (primeros 3 chars):', password.substring(0, 3) + '...');
 
       // Validar campos requeridos
       if (!email || !password) {
@@ -42,6 +43,10 @@ const authController = {
         });
       }
 
+      // 🔥 DEBUG: Agregar logs para verificar la comparación
+      console.log('🔐 Comparando contraseñas...');
+      console.log('🔐 Contraseña almacenada (hash):', user.password.substring(0, 20) + '...');
+
       // 🔥 VERIFICAR CONTRASEÑA CON BCRYPT
       let validPassword = false;
       
@@ -49,15 +54,11 @@ const authController = {
       if (user.password.startsWith('$2a$') || user.password.startsWith('$2b$')) {
         // Contraseña encriptada con bcrypt
         validPassword = await bcrypt.compare(password, user.password);
+        console.log('🔐 Resultado comparación bcrypt:', validPassword);
       } else {
         // Contraseña en texto plano - migrar a bcrypt
         validPassword = (user.password === password);
-        if (validPassword) {
-          // Migrar contraseña a bcrypt
-          user.password = await bcrypt.hash(password, 10);
-          await user.save();
-          console.log('✅ Contraseña migrada a bcrypt para usuario:', email);
-        }
+        console.log('🔐 Resultado comparación texto plano:', validPassword);
       }
 
       if (!validPassword) {
@@ -110,6 +111,31 @@ const authController = {
         status: 'Error', 
         message: 'Error interno del servidor' 
       });
+    }
+  },
+
+
+  // 🔍 FUNCIÓN TEMPORAL PARA VERIFICAR CONTRASEÑA (agregar en authController.js)
+  verifyPassword: async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      
+      const user = await Users.findOne({ where: { email } });
+      if (!user) {
+        return res.status(404).json({ message: 'Usuario no encontrado' });
+      }
+      
+      const isValid = await bcrypt.compare(password, user.password);
+      
+      return res.status(200).json({
+        email: user.email,
+        passwordStored: user.password.substring(0, 20) + '...',
+        isValid: isValid,
+        isBcrypt: user.password.startsWith('$2')
+      });
+    } catch (error) {
+      console.error('Error verificando contraseña:', error);
+      return res.status(500).json({ error: error.message });
     }
   },
 
@@ -511,14 +537,21 @@ const authController = {
       // Generar contraseña temporal segura
       const tempPassword = authController.generateTempPassword();
       
-      // Encriptar y guardar la contraseña temporal
-      user.password = await bcrypt.hash(tempPassword, 10);
-      user.passwordResetToken = null;
-      user.passwordResetExpires = null;
-      await user.save();
+      // 🔥 CORRECCIÓN: Encriptar la contraseña ANTES de guardarla
+      const hashedPassword = await bcrypt.hash(tempPassword, 10);
+      
+      // 🔥 CORRECCIÓN: Usar update con la contraseña ya encriptada
+      await Users.update({
+        password: hashedPassword,
+        passwordResetToken: null,
+        passwordResetExpires: null
+      }, {
+        where: { id: user.id }
+      });
 
       // Devolver la contraseña temporal en la respuesta
       console.log('🔑 Contraseña temporal generada para:', email);
+      console.log('🔐 Contraseña encriptada y guardada en BD');
       
       return res.status(200).json({
         status: 'Success',

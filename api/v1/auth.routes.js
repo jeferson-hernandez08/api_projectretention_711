@@ -17,4 +17,7 @@ router.post('/forgotPassword', authController.forgotPassword);
 // Ruta para restablecer contraseña
 router.post('/resetPassword', authController.resetPassword);
 
+// Ruta temporal para verificar contraseña
+router.post('/verifyPassword', authController.verifyPassword);
+
 module.exports = router;
