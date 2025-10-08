@@ -338,49 +338,198 @@ const authController = {
   //   }
   // },
 
-  // 📧 RECUPERAR CONTRASEÑA | MODO PRUEBA CON LOGS
+  // 📧 RECUPERAR CONTRASEÑA - CON ELASTIC EMAIL
+  // forgotPassword: async (req, res) => {
+  //   try {
+  //     const { email } = req.body;
+      
+  //     console.log(`📧 Solicitando recuperación para: ${email}`);
+      
+  //     // Buscar usuario
+  //     const user = await Users.findOne({ where: { email } });
+  //     if (!user) {
+  //       return res.status(404).json({
+  //         status: 'Error',
+  //         message: 'Usuario no encontrado'
+  //       });
+  //     }
+
+  //     // Generar token
+  //     const resetToken = crypto.randomBytes(32).toString('hex');
+  //     const resetTokenExpires = new Date(Date.now() + 60 * 60 * 1000);
+
+  //     // Guardar token en usuario
+  //     await user.update({
+  //       passwordResetToken: resetToken,
+  //       passwordResetExpires: resetTokenExpires
+  //     });
+
+  //     // Configurar Elastic Email
+  //     const elasticEmail = require('elasticemail');
+  //     const client = elasticEmail.createClient({
+  //       apiKey: process.env.ELASTIC_EMAIL_API_KEY
+  //     });
+
+  //     const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+      
+  //     const msg = {
+  //       from: process.env.EMAIL_FROM,
+  //       from_name: 'Sistema Retención SENA',
+  //       to: email,
+  //       subject: 'Recuperación de contraseña - Sistema de Retención SENA',
+  //       body_html: `
+  //         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+  //           <h2 style="color: #2E86AB;">Recuperación de Contraseña</h2>
+  //           <p>Hola ${user.firstName},</p>
+  //           <p>Has solicitado restablecer tu contraseña. Haz clic en el siguiente enlace:</p>
+  //           <a href="${resetLink}" 
+  //             style="background-color: #2E86AB; color: white; padding: 12px 24px; 
+  //                     text-decoration: none; border-radius: 4px; display: inline-block;">
+  //             Restablecer Contraseña
+  //           </a>
+  //           <p><strong>Este enlace expirará en 1 hora.</strong></p>
+  //           <p>Si no solicitaste este cambio, ignora este mensaje.</p>
+  //           <hr>
+  //           <p style="color: #666; font-size: 12px;">
+  //             Sistema de Retención de Aprendices - SENA
+  //           </p>
+  //         </div>
+  //       `
+  //     };
+
+  //     client.mailer.send(msg, function(err, result) {
+  //       if (err) {
+  //         console.error('Error con Elastic Email:', err);
+  //         throw err;
+  //       }
+  //       console.log('✅ Email enviado con Elastic Email');
+  //     });
+      
+  //     return res.status(200).json({
+  //       status: 'Success',
+  //       message: 'Email de recuperación enviado exitosamente'
+  //     });
+
+  //   } catch (error) {
+  //     console.error('💥 Error:', error);
+      
+  //     // Fallback para desarrollo
+  //     const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+  //     console.log('🔗 Link de recuperación:', resetLink);
+      
+  //     return res.status(200).json({
+  //       status: 'Success',
+  //       message: 'En desarrollo - Usa este link',
+  //       resetLink: resetLink
+  //     });
+  //   }
+  // },
+
+  // 📧 RECUPERAR CONTRASEÑA | MODO PRUEBA CON LOGS ENVIO DE ENDPOINT HACIA LA API
+  // forgotPassword: async (req, res) => {
+  //   try {
+  //     const { email } = req.body;
+      
+  //     console.log(`📧 Solicitando recuperación para: ${email}`);
+      
+  //     // Buscar usuario
+  //     const user = await Users.findOne({ where: { email } });
+  //     if (!user) {
+  //       return res.status(404).json({
+  //         status: 'Error',
+  //         message: 'Usuario no encontrado'
+  //       });
+  //     }
+
+  //     // Generar token
+  //     const resetToken = crypto.randomBytes(32).toString('hex');
+  //     const resetTokenExpires = new Date(Date.now() + 60 * 60 * 1000);
+
+  //     // Guardar token en usuario
+  //     await user.update({
+  //       passwordResetToken: resetToken,
+  //       passwordResetExpires: resetTokenExpires
+  //     });
+
+  //     // **SOLUCIÓN: Mostrar link en consola y respuesta (para testing)**
+  //     const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+      
+  //     console.log('🎯 ====================================');
+  //     console.log('🎯 LINK DE RECUPERACIÓN DE CONTRASEÑA:');
+  //     console.log('🎯 ====================================');
+  //     console.log(`🔗 ${resetLink}`);
+  //     console.log('🎯 ====================================');
+      
+  //     // Para producción, aquí iría el código de SendGrid
+  //     // Pero para testing, devolvemos el link directamente
+      
+  //     return res.status(200).json({
+  //       status: 'Success',
+  //       message: 'Proceso de recuperación completado. Revisa los logs del servidor para el link de recuperación.',
+  //       resetLink: resetLink, // En desarrollo, enviamos el link directamente
+  //       token: resetToken // Para debugging
+  //     });
+
+  //   } catch (error) {
+  //     console.error('💥 Error en recuperación:', error);
+      
+  //     return res.status(500).json({
+  //       status: 'Error',
+  //       message: 'Error interno del servidor',
+  //       error: error.message
+  //     });
+  //   }
+  // },
+
+
+   // 📧 RECUPERAR CONTRASEÑA - SISTEMA AUTÓNOMO (RECOMENDADO)
   forgotPassword: async (req, res) => {
     try {
-      const { email } = req.body;
+      const { email, document } = req.body;
       
       console.log(`📧 Solicitando recuperación para: ${email}`);
+      console.log(`📄 Con documento: ${document}`);
       
-      // Buscar usuario
-      const user = await Users.findOne({ where: { email } });
+      // Buscar usuario por email Y documento (doble verificación)
+      const user = await Users.findOne({ 
+        where: { 
+          email: email,
+          document: document 
+        } 
+      });
+      
       if (!user) {
+        console.log('❌ Usuario no encontrado o documento no coincide');
         return res.status(404).json({
           status: 'Error',
-          message: 'Usuario no encontrado'
+          message: 'No se encontró usuario con esas credenciales'
         });
       }
 
-      // Generar token
-      const resetToken = crypto.randomBytes(32).toString('hex');
-      const resetTokenExpires = new Date(Date.now() + 60 * 60 * 1000);
+      console.log(`✅ Usuario verificado: ${user.firstName} ${user.lastName}`);
 
-      // Guardar token en usuario
-      await user.update({
-        passwordResetToken: resetToken,
-        passwordResetExpires: resetTokenExpires
-      });
+      // Generar contraseña temporal segura
+      const tempPassword = authController.generateTempPassword();
+      
+      // Encriptar y guardar la contraseña temporal
+      user.password = await bcrypt.hash(tempPassword, 10);
+      user.passwordResetToken = null;
+      user.passwordResetExpires = null;
+      await user.save();
 
-      // **SOLUCIÓN: Mostrar link en consola y respuesta (para testing)**
-      const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
-      
-      console.log('🎯 ====================================');
-      console.log('🎯 LINK DE RECUPERACIÓN DE CONTRASEÑA:');
-      console.log('🎯 ====================================');
-      console.log(`🔗 ${resetLink}`);
-      console.log('🎯 ====================================');
-      
-      // Para producción, aquí iría el código de SendGrid
-      // Pero para testing, devolvemos el link directamente
+      // Devolver la contraseña temporal en la respuesta
+      console.log('🔑 Contraseña temporal generada para:', email);
       
       return res.status(200).json({
         status: 'Success',
-        message: 'Proceso de recuperación completado. Revisa los logs del servidor para el link de recuperación.',
-        resetLink: resetLink, // En desarrollo, enviamos el link directamente
-        token: resetToken // Para debugging
+        message: 'Se ha generado una contraseña temporal. Por favor, inicia sesión y cambia tu contraseña inmediatamente.',
+        tempPassword: tempPassword,
+        userInfo: {
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email
+        },
+        instructions: 'Guarda esta contraseña y cámbiala después de iniciar sesión.'
       });
 
     } catch (error) {
@@ -388,10 +537,20 @@ const authController = {
       
       return res.status(500).json({
         status: 'Error',
-        message: 'Error interno del servidor',
+        message: 'Error interno del servidor al procesar la recuperación',
         error: error.message
       });
     }
+  },
+
+  // 🔧 GENERAR CONTRASEÑA TEMPORAL SEGURA
+  generateTempPassword: function() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%';
+    let tempPassword = '';
+    for (let i = 0; i < 12; i++) {
+      tempPassword += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return tempPassword;
   },
 
   
