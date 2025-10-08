@@ -482,7 +482,7 @@ const authController = {
   // },
 
 
-   // 📧 RECUPERAR CONTRASEÑA - SISTEMA AUTÓNOMO (RECOMENDADO)
+  // 📧 RECUPERAR CONTRASEÑA - SISTEMA AUTÓNOMO CON VISTA EN FRONTEND viewForgotPassword.dart
   forgotPassword: async (req, res) => {
     try {
       const { email, document } = req.body;
