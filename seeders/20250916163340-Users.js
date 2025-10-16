@@ -22,14 +22,14 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        firstName: 'María',
-        lastName: 'Gómez',
-        email: 'maria.gomez@sena.edu.co',
+        firstName: 'Julian',
+        lastName: 'Salazar',
+        email: 'julian.salazar@sena.edu.co',
         phone: '3139876543',
         document: '1009876543',
         password: await bcrypt.hash('Instructor456@', 12), // 🔐 Contraseña fuerte
         coordinadorType: 'No es coordinador',
-        manager: false,
+        manager: true,
         fkIdRols: 2, // Instructor
         passwordResetToken: null,
         passwordResetExpires: null,
