@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    const hashedPassword = await bcrypt.hash('123456', 10); // 🔑 Contraseña genérica
+    // 🔑 Contraseñas diferentes, seguras y hasheadas para cada usuario
     await queryInterface.bulkInsert('users', [
        {
         firstName: 'Carlos',
@@ -12,7 +12,7 @@ module.exports = {
         email: 'carlos.ramirez@sena.edu.co',
         phone: '3104567890',
         document: '1001234567',
-        password: hashedPassword,
+        password: await bcrypt.hash('AdminSecure123!', 12), // 🔐 Contraseña fuerte
         coordinadorType: 'No es coordinador',
         manager: true,
         fkIdRols: 1, // Administrador
@@ -27,7 +27,7 @@ module.exports = {
         email: 'maria.gomez@sena.edu.co',
         phone: '3139876543',
         document: '1009876543',
-        password: hashedPassword,
+        password: await bcrypt.hash('Instructor456@', 12), // 🔐 Contraseña fuerte
         coordinadorType: 'No es coordinador',
         manager: false,
         fkIdRols: 2, // Instructor
@@ -42,7 +42,7 @@ module.exports = {
         email: 'andres.lopez@sena.edu.co',
         phone: '3204567890',
         document: '1012345678',
-        password: hashedPassword,
+        password: await bcrypt.hash('Coordinador789#', 12), // 🔐 Contraseña fuerte
         coordinadorType: 'Coordinador Académico',
         manager: true,
         fkIdRols: 3, // Coordinador
@@ -57,7 +57,7 @@ module.exports = {
         email: 'laura.martinez@sena.edu.co',
         phone: '3012345678',
         document: '1023456789',
-        password: hashedPassword,
+        password: await bcrypt.hash('Bienestar012$', 12), // 🔐 Contraseña fuerte
         coordinadorType: 'No es coordinador',
         manager: false,
         fkIdRols: 4, // Profesional de Bienestar
@@ -67,12 +67,12 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        firstName: 'Santiago',
-        lastName: 'Hernández',
-        email: 'santiago.hernandez@sena.edu.co',
+        firstName: 'Juan Jose',
+        lastName: 'Posada',
+        email: 'juan.posada@sena.edu.co',
         phone: '3112233445',
         document: '1034567890',
-        password: hashedPassword,
+        password: await bcrypt.hash('Vocero345%', 12), // 🔐 Contraseña fuerte
         coordinadorType: 'No es coordinador',
         manager: false,
         fkIdRols: 5, // Aprendiz Vocero
