@@ -7,10 +7,10 @@
     "dialect": "mysql"
   },
   "test": {
-    "username": "projectretention711_user",
-    "password": "wqDspLygZaNE01sQmYUqV9lv76PURhPa",
-    "database": "projectretention711",
-    "host": "dpg-d34m086r433s73co6ia0-a",
+    "username": "projectretention711_3c2x_user",
+    "password": "bTspe32vczTss47SKDcnLRCfZ0CoaIKI",
+    "database": "projectretention711_3c2x",
+    "host": "dpg-d3ofl53ipnbc73fva8pg-a",
     "dialect": "postgres",
     "dialectOptions": {
       "ssl": {
