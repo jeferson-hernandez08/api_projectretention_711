@@ -8,9 +8,9 @@
   },
   "test": {
     "username": "projectretention711_3c2x_user",
-    "password": "bTspe32vczTss47SKDcnLRCfZ0CoaIKI",
-    "database": "projectretention711_3c2x",
-    "host": "dpg-d3ofl53ipnbc73fva8pg-a",
+    "password": "1PhlJrQTmrrFrtyulb7LYszuB51gOfhK",
+    "database": "projectretention711_ofpz",
+    "host": "dpg-d5ftsdm3jp1c738assfg-a",
     "dialect": "postgres",
     "dialectOptions": {
       "ssl": {
