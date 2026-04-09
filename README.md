@@ -8,12 +8,13 @@
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 [![Express](https://img.shields.io/badge/Express.js-4.x-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14%2B-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Sequelize](https://img.shields.io/badge/Sequelize-ORM-52B0E7?style=for-the-badge&logo=sequelize&logoColor=white)](https://sequelize.org/)
 [![JWT](https://img.shields.io/badge/JWT-Auth-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)](https://jwt.io/)
 [![Docker](https://img.shields.io/badge/Docker-Enabled-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
 [![Render](https://img.shields.io/badge/Deployed%20on-Render-46E3B7?style=for-the-badge&logo=render&logoColor=black)](https://render.com/)
 [![Version](https://img.shields.io/badge/Versión-2.0-blue?style=for-the-badge)](https://github.com/jeferson-hernandez08/api_projectretention_711)
 
-*API REST · Node.js + Express · MVC + Services · PostgreSQL*
+*API REST · Node.js + Express · MVC + Services · Sequelize ORM · PostgreSQL*
 
 [🌐 API en producción](https://api-projectretention-711.onrender.com/) · [📋 Documentación](#-documentación-de-endpoints) · [🐛 Reportar bug](../../issues) · [💡 Solicitar feature](../../issues)
 
@@ -43,7 +44,7 @@
 
 La **API REST de SENA Contigo** es el núcleo backend del sistema de retención estudiantil del **Centro de Procesos Industriales y Construcción (CPIC) del SENA**. Centraliza toda la lógica de negocio, el acceso a la base de datos PostgreSQL y la comunicación con los clientes (aplicación móvil Flutter y plataforma web PHP).
 
-Esta API fue construida sobre **Node.js + Express**, siguiendo una arquitectura **MVC extendida con capa de Servicios**, priorizando la escalabilidad, la mantenibilidad y la seguridad del sistema.
+Esta API fue construida sobre **Node.js + Express**, siguiendo una arquitectura **MVC extendida con capa de Servicios**, y utiliza **Sequelize** como ORM para gestionar las migraciones, modelos y seeders de la base de datos, priorizando la escalabilidad, la mantenibilidad y la seguridad del sistema.
 
 **URL de producción:**
 ```
@@ -102,9 +103,15 @@ La API implementa una arquitectura **MVC extendida con capa de Servicios**, dond
 └──────────┬───────────┘
            │
            ▼
+┌──────────────────────┐
+│       MODELOS        │  ← Entidades definidas con Sequelize
+│       models/        │
+└──────────┬───────────┘
+           │
+           ▼
 ┌──────────────────────┐      ┌─────────────────────────────┐
-│       MODELOS        │─────►│   BASE DE DATOS             │
-│       models/        │      │   PostgreSQL (Render)       │
+│   SEQUELIZE ORM      │─────►│   BASE DE DATOS             │
+│ Migraciones·Seeders  │      │   PostgreSQL (Render)       │
 └──────────────────────┘      └─────────────────────────────┘
 ```
 
@@ -113,7 +120,7 @@ La API implementa una arquitectura **MVC extendida con capa de Servicios**, dond
 ```
 Cliente → [HTTP Request] → Ruta (api/v1) → Middleware JWT
 → Controlador (valida entrada) → Servicio (lógica de negocio)
-→ Modelo (consulta SQL) → PostgreSQL
+→ Modelo Sequelize (consulta ORM) → PostgreSQL
 → [JSON Response] → Cliente
 ```
 
@@ -128,12 +135,15 @@ Cliente → [HTTP Request] → Ruta (api/v1) → Middleware JWT
 | ![Node.js](https://img.shields.io/badge/Node.js-339933?logo=nodedotjs&logoColor=white) | 18+ | Entorno de ejecución JavaScript del lado del servidor |
 | ![Express.js](https://img.shields.io/badge/Express-000000?logo=express&logoColor=white) | 4.x | Framework minimalista para construir la API REST |
 
-### Base de Datos
+### Base de Datos & ORM
 
 | Tecnología | Versión | Descripción |
 |---|---|---|
 | ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white) | 14+ | Sistema de gestión de base de datos relacional |
-| **pg** | latest | Driver oficial de PostgreSQL para Node.js |
+| ![Sequelize](https://img.shields.io/badge/Sequelize-52B0E7?logo=sequelize&logoColor=white) | 6.x | ORM para Node.js — gestiona modelos, migraciones y seeders |
+| **pg / pg-hstore** | latest | Driver de PostgreSQL requerido por Sequelize |
+
+> 🔑 **Sequelize** actúa como intermediario entre la API y PostgreSQL, permitiendo definir los modelos como clases JavaScript, versionar la estructura de la base de datos mediante migraciones, y poblarla con seeders de forma controlada — sin escribir SQL en crudo para la gestión del esquema.
 
 ### Seguridad & Autenticación
 
@@ -163,6 +173,7 @@ Cliente → [HTTP Request] → Ruta (api/v1) → Middleware JWT
 
 | Herramienta | Descripción |
 |---|---|
+| **Sequelize CLI** | Generación y ejecución de migraciones y seeders desde consola |
 | **Postman / Insomnia** | Testing y documentación de endpoints |
 | **DBeaver** | Gestión visual de la base de datos PostgreSQL |
 | **nodemon** | Reinicio automático del servidor en desarrollo |
@@ -185,7 +196,7 @@ api_projectretention_711/
 │       └── ...
 │
 ├── config/
-│   └── config.json             # Configuración de conexión a PostgreSQL (Render)
+│   └── config.json             # Configuración de Sequelize (BD por entorno: dev/test/prod)
 │
 ├── controllers/                # Controladores MVC — gestión de solicitudes HTTP
 │   ├── authController.js
@@ -200,7 +211,8 @@ api_projectretention_711/
 │   ├── aprendicesService.js
 │   └── ...
 │
-├── models/                     # Modelos — interacción directa con PostgreSQL
+├── models/                     # Modelos Sequelize — representan las tablas de la BD
+│   ├── index.js                # Inicialización de Sequelize y asociaciones
 │   ├── userModel.js
 │   ├── aprendizModel.js
 │   ├── reporteModel.js
@@ -209,11 +221,11 @@ api_projectretention_711/
 ├── database/
 │   └── schema.sql              # Backup del esquema de la base de datos
 │
-├── migrations/                 # Definición y versionado de tablas
+├── migrations/                 # Migraciones Sequelize — versionado del esquema de BD
 │   ├── 001_create_users.js
 │   └── ...
 │
-├── seeders/                    # Datos iniciales y de prueba
+├── seeders/                    # Seeders Sequelize — datos iniciales y de prueba
 │   ├── 01_users.js
 │   ├── 02_programas.js
 │   └── ...
@@ -225,6 +237,7 @@ api_projectretention_711/
 │
 ├── server.js                   # Punto de entrada principal de la API
 ├── reset-db.js                 # Script para reiniciar la base de datos
+├── .sequelizerc                # Configuración de rutas para Sequelize CLI
 ├── package.json                # Dependencias y scripts del proyecto
 ├── package-lock.json           # Lock de versiones de dependencias
 ├── Dockerfile                  # Configuración Docker para despliegue
@@ -308,6 +321,7 @@ https://api-projectretention-711.onrender.com/api/v1
 | **Node.js** | 18.x o superior |
 | **npm** | 8.x o superior |
 | **PostgreSQL** | 14 o superior |
+| **Sequelize CLI** | `npm install -g sequelize-cli` |
 | **Git** | Cualquier versión reciente |
 | **Docker** | Opcional — para despliegue en contenedor |
 
@@ -336,7 +350,7 @@ cd api_projectretention_711
 npm install
 ```
 
-Instalará automáticamente: `express`, `pg`, `dotenv`, `cors`, `nodemailer`, `jsonwebtoken`, `bcrypt`, `morgan` y más.
+Instalará automáticamente: `express`, `sequelize`, `pg`, `pg-hstore`, `dotenv`, `cors`, `nodemailer`, `jsonwebtoken`, `bcrypt`, `morgan` y más.
 
 ### 3. Configurar variables de entorno
 
@@ -346,26 +360,48 @@ cp .env.example .env
 
 Edita `.env` con tus datos reales (ver sección [Variables de Entorno](#️-variables-de-entorno)).
 
-### 4. Configurar conexión a PostgreSQL
+### 4. Configurar Sequelize — conexión a PostgreSQL
 
-Edita `config/config.json` con los datos de tu base de datos:
+Edita `config/config.json`. Sequelize usa este archivo para conectarse según el entorno (`development`, `test`, `production`):
 
 ```json
 {
-  "host": "tu-host-postgres",
-  "port": 5432,
-  "database": "sena_contigo",
-  "user": "tu_usuario",
-  "password": "tu_contraseña",
-  "ssl": true
+  "development": {
+    "username": "tu_usuario",
+    "password": "tu_contraseña",
+    "database": "sena_contigo",
+    "host": "localhost",
+    "port": 5432,
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "tu_usuario",
+    "password": "tu_contraseña",
+    "database": "sena_contigo",
+    "host": "tu-host.render.com",
+    "port": 5432,
+    "dialect": "postgres",
+    "ssl": true
+  },
+  "production": {
+    "use_env_variable": "DATABASE_URL",
+    "dialect": "postgres",
+    "ssl": true
+  }
 }
 ```
 
-### 5. Ejecutar migraciones
+> 💡 En producción (Render), Sequelize lee directamente desde `DATABASE_URL`, evitando exponer credenciales en el archivo.
 
-Las migraciones corren automáticamente con `npm start`. Para ejecutarlas manualmente en local:
+### 5. Ejecutar migraciones con Sequelize
+
+Las migraciones crean todas las tablas de forma ordenada y versionada:
 
 ```bash
+# Ejecutar todas las migraciones pendientes
+npx sequelize-cli db:migrate
+
+# O con el script del proyecto
 npm run migrate
 ```
 
@@ -374,6 +410,10 @@ npm run migrate
 > ⚠️ Ejecutar **solo una vez**. Después de poblar, remueve el comando de seeders del script de inicio para evitar duplicados.
 
 ```bash
+# Ejecutar todos los seeders
+npx sequelize-cli db:seed:all
+
+# O con el script del proyecto
 npm run seed
 ```
 
@@ -409,12 +449,7 @@ Crea un archivo `.env` en la raíz del proyecto con las siguientes variables:
 PORT=4000
 NODE_ENV=development
 
-# Base de Datos PostgreSQL (Render o local)
-DB_HOST=tu-host.render.com
-DB_PORT=5432
-DB_NAME=sena_contigo
-DB_USER=tu_usuario
-DB_PASSWORD=tu_contraseña
+# Base de Datos PostgreSQL — usada por Sequelize en producción
 DATABASE_URL=postgresql://usuario:contraseña@host:5432/sena_contigo
 
 # Autenticación JWT
@@ -435,7 +470,9 @@ MAIL_FROM="SENA Contigo <noreply@senacontigo.com>"
 
 ## 🗄️ Base de Datos
 
-El sistema usa **PostgreSQL** desplegado en **Render**. El modelo relacional incluye las siguientes entidades:
+El sistema usa **PostgreSQL** desplegado en **Render**, gestionado completamente a través de **Sequelize ORM**. El esquema se define y versiona mediante migraciones, y los datos iniciales se insertan con seeders — todo sin escribir SQL en crudo para la gestión del esquema.
+
+### Entidades del modelo relacional
 
 | Tabla | Descripción |
 |---|---|
@@ -449,14 +486,20 @@ El sistema usa **PostgreSQL** desplegado en **Render**. El modelo relacional inc
 | `intervenciones` | Acciones de apoyo aplicadas por aprendiz |
 | `estrategias` | Estrategias de intervención disponibles |
 
-### Scripts de base de datos
+### Comandos Sequelize CLI
 
 ```bash
-# Ejecutar migraciones (crear tablas)
-npm run migrate
+# Crear todas las tablas (migraciones)
+npx sequelize-cli db:migrate
 
-# Poblar con datos iniciales (solo una vez)
-npm run seed
+# Revertir la última migración
+npx sequelize-cli db:migrate:undo
+
+# Revertir todas las migraciones
+npx sequelize-cli db:migrate:undo:all
+
+# Ejecutar seeders (datos iniciales — solo una vez)
+npx sequelize-cli db:seed:all
 
 # Resetear la base de datos desde cero
 node reset-db.js
@@ -493,9 +536,9 @@ postgresql://usuario:contraseña@hostname.render.com:5432/nombre_bd
 
 **5.** Agrega todas las variables de entorno en el panel de Render: `DATABASE_URL`, `JWT_SECRET`, credenciales de correo, etc.
 
-**6.** Agrega `NODE_ENV=test` para permitir que las migraciones corran al iniciar.
+**6.** Agrega `NODE_ENV=test` para que Sequelize use el entorno correcto y ejecute las migraciones al iniciar.
 
-**7.** Haz **Deploy** — Render construirá e iniciará la API automáticamente.
+**7.** Haz **Deploy** — Render construirá e iniciará la API. Sequelize migrará automáticamente la BD en el arranque.
 
 **8.** Para actualizaciones: haz `git push` y en Render presiona **"Deploy latest commit"**.
 
@@ -547,7 +590,7 @@ router.get('/usuarios', verifyToken, isAdmin, controller.getUsers);
 | Medida | Descripción |
 |---|---|
 | **bcrypt** | Contraseñas como hash seguro, nunca en texto plano |
-| **Consultas preparadas** | Prevención de SQL Injection con parámetros en pg |
+| **Sequelize ORM** | Prevención de SQL Injection mediante consultas parametrizadas |
 | **CORS configurado** | Control estricto de dominios autorizados |
 | **Variables de entorno** | Credenciales fuera del código fuente |
 | **HTTPS** | Comunicación cifrada en producción (TLS via Render) |
@@ -584,6 +627,7 @@ Hecho con ❤️ por aprendices del **SENA CPIC**
 
 [![API Status](https://img.shields.io/badge/API-Online-brightgreen?style=flat-square)](https://api-projectretention-711.onrender.com/)
 [![Made with Node.js](https://img.shields.io/badge/Made%20with-Node.js-339933?style=flat-square&logo=nodedotjs)](https://nodejs.org/)
+[![ORM](https://img.shields.io/badge/ORM-Sequelize-52B0E7?style=flat-square&logo=sequelize)](https://sequelize.org/)
 [![Database](https://img.shields.io/badge/Database-PostgreSQL-4169E1?style=flat-square&logo=postgresql)](https://www.postgresql.org/)
 
 </div>
