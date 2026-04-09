@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="public/img/logoSenaProyect.png" alt="SENA Contigo Logo" width="200"/>
+<img src="public/img/logoSenaProyect3.png" alt="SENA Contigo Logo" width="200"/>
 
 # 🎓 SENA Contigo — API REST
 ### Backend · Plataforma de Apoyo y Retención de Aprendices
